@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xlink="http://www.w3.org/1999/xlink" baseProfile="full" height="264px" preserveAspectRatio="xMidYMid meet" style="font-family: times, serif; font-weight:normal; font-style: normal; font-size: 16px;" version="1.1" viewBox="0,0,264.0,264.0" width="264px">
+  <defs/>
+  <svg width="100%" x="0" y="0em">
+    <defs/>
+    <text text-anchor="middle" x="50%" y="1em">S</text>
+  </svg>
+  <svg width="100%" x="0%" y="3em">
+    <defs/>
+    <svg width="100%" x="0" y="0em">
+      <defs/>
+      <text text-anchor="middle" x="50%" y="1em">I_Cmaj</text>
+    </svg>
+    <svg width="24.2424%" x="0%" y="3em">
+      <defs/>
+      <svg width="100%" x="0" y="0em">
+        <defs/>
+        <text text-anchor="middle" x="50%" y="1em">I_Cmaj</text>
+      </svg>
+      <svg width="100%" x="0%" y="3em">
+        <defs/>
+        <svg width="100%" x="0" y="0em">
+          <defs/>
+          <text text-anchor="middle" x="50%" y="1em">Cmaj7</text>
+        </svg>
+      </svg>
+      <line stroke="black" x1="50%" x2="50%" y1="1.2em" y2="3em"/>
+    </svg>
+    <line stroke="black" x1="50%" x2="12.1212%" y1="1.2em" y2="3em"/>
+    <svg width="75.7576%" x="24.2424%" y="3em">
+      <defs/>
+      <svg width="100%" x="0" y="0em">
+        <defs/>
+        <text text-anchor="middle" x="50%" y="1em">I_Cmaj</text>
+      </svg>
+      <svg width="68%" x="0%" y="3em">
+        <defs/>
+        <svg width="100%" x="0" y="0em">
+          <defs/>
+          <text text-anchor="middle" x="50%" y="1em">V_Cmaj</text>
+        </svg>
+        <svg width="52.9412%" x="0%" y="3em">
+          <defs/>
+          <svg width="100%" x="0" y="0em">
+            <defs/>
+            <text text-anchor="middle" x="50%" y="1em">II_Cmaj</text>
+          </svg>
+          <svg width="100%" x="0%" y="3em">
+            <defs/>
+            <svg width="100%" x="0" y="0em">
+              <defs/>
+              <text text-anchor="middle" x="50%" y="1em">Dmin7</text>
+            </svg>
+          </svg>
+          <line stroke="black" x1="50%" x2="50%" y1="1.2em" y2="3em"/>
+        </svg>
+        <line stroke="black" x1="50%" x2="26.4706%" y1="1.2em" y2="3em"/>
+        <svg width="47.0588%" x="52.9412%" y="3em">
+          <defs/>
+          <svg width="100%" x="0" y="0em">
+            <defs/>
+            <text text-anchor="middle" x="50%" y="1em">V_Cmaj</text>
+          </svg>
+          <svg width="100%" x="0%" y="3em">
+            <defs/>
+            <svg width="100%" x="0" y="0em">
+              <defs/>
+              <text text-anchor="middle" x="50%" y="1em">G7</text>
+            </svg>
+          </svg>
+          <line stroke="black" x1="50%" x2="50%" y1="1.2em" y2="3em"/>
+        </svg>
+        <line stroke="black" x1="50%" x2="76.4706%" y1="1.2em" y2="3em"/>
+      </svg>
+      <line stroke="black" x1="50%" x2="34%" y1="1.2em" y2="3em"/>
+      <svg width="32%" x="68%" y="3em">
+        <defs/>
+        <svg width="100%" x="0" y="0em">
+          <defs/>
+          <text text-anchor="middle" x="50%" y="1em">I_Cmaj</text>
+        </svg>
+        <svg width="100%" x="0%" y="3em">
+          <defs/>
+          <svg width="100%" x="0" y="0em">
+            <defs/>
+            <text text-anchor="middle" x="50%" y="1em">Cmaj7</text>
+          </svg>
+        </svg>
+        <line stroke="black" x1="50%" x2="50%" y1="1.2em" y2="3em"/>
+      </svg>
+      <line stroke="black" x1="50%" x2="84%" y1="1.2em" y2="3em"/>
+    </svg>
+    <line stroke="black" x1="50%" x2="62.1212%" y1="1.2em" y2="3em"/>
+  </svg>
+  <line stroke="black" x1="50%" x2="50%" y1="1.2em" y2="3em"/>
+</svg>
