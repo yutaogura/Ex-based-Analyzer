@@ -4,13 +4,13 @@
     <v-row>
     <v-col>   
     <v-card>
-      <v-card-text>tree {{ num }} {{src}} prob:NaN </v-card-text>
-      <SVGElement :name="src" />
-      <!-- <v-img
-        v-bind:src="image_src"
-        max-width="100"
+      <!-- <v-card-text>tree {{ num }} {{src}} prob:NaN </v-card-text> -->
+      <v-card-text>tree {{ num }} prob:NaN </v-card-text>
+      <!-- <SVGElement name='/assets/temp.svg' /> -->
+      <img
+        :src="imageSrc(src)"
         class="justify-center"
-      /> -->
+      >
     </v-card>
     </v-col>
     </v-row>
@@ -26,9 +26,21 @@ export default {
   components: { SVGElement },
   data() {
     return {
-      image_src: require("@/assets/t.svg"), //imgタグで読み込む
+      default_src: require("~/assets/temp.svg"), //imgタグで読み込む
     };
   },
+  methods:{
+    imageSrc: function(src){
+      if(src){
+        src = "file://" + src;
+        console.log(src);
+        return src;
+      }else{
+        console.log("hogehoge" + this.default_src);
+        return this.default_src;
+      }
+    }
+  }
 };
 </script>
 

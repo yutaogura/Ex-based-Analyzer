@@ -21,6 +21,7 @@
 
 <script>
 import ImageCard from "@/components/ImageCard.vue";
+const fs = require('fs')
 
 export default {
   name: "EachStep",
@@ -65,7 +66,7 @@ export default {
     },
     appendSlide: function (src) {
       if(typeof(src) != "string"){
-        src = "hoge"
+        src = ""
       } 
       this.cards.push({
         key: this.count++,
