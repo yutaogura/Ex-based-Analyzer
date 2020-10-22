@@ -5,7 +5,7 @@
     <v-col>   
     <v-card>
       <!-- <v-card-text>tree {{ num }} {{src}} prob:NaN </v-card-text> -->
-      <v-card-text>tree {{ num }} prob:NaN </v-card-text>
+      <v-card-text>{{ return_file_name(src) }} </v-card-text>
       <!-- <SVGElement name='/assets/temp.svg' /> -->
       <img
         :src="imageSrc(src)"
@@ -30,6 +30,9 @@ export default {
     };
   },
   methods:{
+    return_file_name: function(src){
+      return src.replace(/^.*[\\\/]/, '')
+    },
     imageSrc: function(src){
       if(src){
         src = "file://" + src;
