@@ -1,4 +1,8 @@
-# pcfg-app
+# Expectation-based Jazz Chord Sequene Analyzer
+コード進行を漸進的に解析，構文木を表示するシステム
+(システム本体)
+
+
 
 > An electron-nuxt project
 
