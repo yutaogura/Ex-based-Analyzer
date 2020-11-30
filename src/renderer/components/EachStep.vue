@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{sequence.join(' ')}}
+    {{ sequence.join(" ") }}
     <v-btn icon color="green" @click="showFileInputDialog"
       ><v-icon>mdi-folder-multiple-image</v-icon></v-btn
     >
@@ -11,7 +11,12 @@
       ><v-icon>mdi-trash-can</v-icon></v-btn
     >
     <swiper ref="mySwiper" :options="swiperOption">
-      <img-item v-for="card in cards" :num="card.key" :src="card.src" :key="card.key" />
+      <img-item
+        v-for="card in cards"
+        :num="card.key"
+        :src="card.src"
+        :key="card.key"
+      />
       <div class="swiper-scrollbar"></div>
       <div slot="button-prev" class="swiper-button-prev" />
       <div slot="button-next" class="swiper-button-next" />
@@ -21,7 +26,7 @@
 
 <script>
 import ImageCard from "@/components/ImageCard.vue";
-const fs = require('fs')
+const fs = require("fs");
 
 export default {
   name: "EachStep",
@@ -32,7 +37,7 @@ export default {
   data() {
     return {
       cards: [],
-      count:0,
+      count: 0,
       swiperOption: {
         pagination: {
           el: ".swiper-pagination",
@@ -50,7 +55,32 @@ export default {
       },
     };
   },
+  created: function () {
+    console.log("created");
+    //this.searchandappend();
+  },
+  mounted: function () {
+    console.log("mounted");
+    this.searchandappend();
+  },
+  updated: function () {
+    //this.searchandappend();
+  },
   methods: {
+    searchandappend: function () {
+      var dir = this.sequence.join("");
+      var path = "/py/svg/" + dir + "/*";
+      // TODO:めちゃくちゃハードコーディンくしちゃってる
+      const { execSync } = require("child_process");
+      const stdout = execSync("ls -d1 $PWD" + path);
+      const urls = stdout.toString().split("\n");
+      urls.pop();
+      //console.log(urls);
+      for (var item in urls) {
+        this.appendSlide(urls[item]);
+        console.log(urls[item]);
+      }
+    },
     showFileInputDialog: function (event) {
       const { dialog } = require("electron").remote;
       let src = dialog.showOpenDialogSync(null, {
@@ -59,15 +89,15 @@ export default {
         defaultPath: ".",
         filters: [{ name: "image file", extensions: ["svg"] }],
       });
-      for(var item in src){
-        this.appendSlide(src[item])
-        console.log(src[item])
-      } 
+      for (var item in src) {
+        this.appendSlide(src[item]);
+        console.log(src[item]);
+      }
     },
     appendSlide: function (src) {
-      if(typeof(src) != "string"){
-        src = ""
-      } 
+      if (typeof src != "string") {
+        src = "";
+      }
       this.cards.push({
         key: this.count++,
         src: src,
@@ -83,5 +113,4 @@ export default {
 
 <style>
 @import "swiper/css/swiper.css";
-
 </style>

@@ -31,7 +31,11 @@ export default {
   },
   methods:{
     return_file_name: function(src){
-      return src.replace(/^.*[\\\/]/, '')
+      console.log("--->")
+      var temp = src.replace(/^.*[\\\/rank]ob_/, '');
+      var temp2 = temp.replace(".svg",'');
+      console.log(temp2);
+      return temp2;
     },
     imageSrc: function(src){
       if(src){

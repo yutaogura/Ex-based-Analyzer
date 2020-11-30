@@ -1,0 +1,458 @@
+"""
+Created on Mon Sep 14 2020
+
+Incremental_chart_Parsing 
+
+CategoryとLexiconはこんな感じ
+Category = ["S","I_C","II_C","V_C","II_G","V_G","V_Gb","II_Gb","V_D","II_D"]
+Lexicon = {"Cmaj7":["I_Cmaj"],"Dmin7":["II_Cmaj"],"G7":["V_Cmaj"],"D7":["V_Gmaj"],"Emin7":["II_Dmaj"],"A7":["V_Dmaj"],"Amin7":["II_Gmaj"],"Abmin7":["II_Gbmaj"],"Db7":["V_Gbmaj"]}
+
+デバッグしたいところにこれブチ込む
+import pdb; pdb.set_trace()
+
+
+@author:yuta ogura
+"""
+
+import copy
+import re
+import pandas as pd
+import shutil
+import os
+import glob
+
+#ログファイル
+FILE_NAME = "./py/chart2.log"
+
+#ログ形式 
+#LOG_FORMAT = 0  #readable format
+#LOG_FORMAT = 1 #tex format
+LOG_FORMAT = 2  #cairosvg format
+PKL_DATA_PATH = "./py/temp/"
+
+#Analysis target 
+ANALYSIS_TARGET_FILE = "./py/target.txt"
+#inputファイル
+FILE_NAME_NONTERMINAL = "./py/nonterminals.txt"
+FILE_NAME_LEXICON = "./py/lexicon.txt"
+FILE_NAME_GRAMMAR = "./py/pcfg.txt"
+Category = []
+Lexicon = {}
+Grammar = []
+#どの深さまでlocal_chartを展開するか？
+Depth_Limit = 5
+
+
+"""
+Rule class 
+"""
+class Rule:
+    def __init__(self,left,right,prob=None):
+        self.left = left   #String
+        self.right = right #List
+        self.prob = prob  #Float
+
+    def print_rule(self):
+        if self.prob:
+            tot = self.left + " -> " + (' '.join(self.right)) + ' ['+str(self.prob)+']'
+        else:
+            tot = self.left + " -> " + (' '.join(self.right))
+        return tot
+
+"""
+State class
+"""
+
+class State:
+    def __init__(self,category,content,prob=1.0,decided = True):
+        self.category = category   #String
+        self.content = content   #[State] or []  List
+        self.decided = decided 
+        self.id = 0
+        self.prob = prob
+
+    def setId(self,id):
+        self.id = id
+
+    def print_state(self,str=""):
+        tot = ''
+        #[]リスト
+        if len(self.content) == 0:
+            if self.decided == True:
+                tot = self.category
+            else:
+                tot = self.category + "\n" + str + "|- ?"
+
+        # # #終端文字
+        # elif len(self.content) == 1:
+        #     tot =  self.category +"\n|- " + self.content[0].print_state()
+        #Stateのリスト
+        else: 
+            tot = self.category
+            for s in self.content:
+                tot = tot + "\n" + str + "|-" +s.print_state(str + "  ")
+        return tot
+
+    def print_state_tex(self):
+        tot = ''
+        #[]リスト
+        if len(self.content) == 0:
+            if self.decided == True:
+                tot = "{\\rm " + self.category + "}"
+            else:
+                tot = "[?]_{\\rm "+self.category + "}"
+        # # #終端文字
+        # elif len(self.content) == 1:
+        #     tot =  self.category +"\n|- " + self.content[0].print_state()
+        #Stateのリスト
+        else: 
+            tot = ""
+            m = ""
+            for s in self.content:
+                #print(m + "=>")
+                m =  m + s.print_state_tex()
+                tot = "[" + m + "]" + "_{\\rm " + self.category + "}"
+
+        #print("<=" + tot)        
+        return tot
+
+    #タプルを返す    
+    def print_state_cairo(self):
+        tot = ''
+        #空リスト
+        if len(self.content) == 0:
+            if self.decided == True:
+                tot = '\"'+self.category+'\"' 
+            else:
+                tot = '\"'+self.category+'\"'  
+        # # #終端文字
+        # elif len(self.content) == 1:
+        #     tot =  self.category +"\n|- " + self.content[0].print_state()
+        #Stateのリスト
+        else: 
+            tot = ""
+            m = ""
+            for s in self.content:
+                #print(m + "=>")
+                m =  m + ", " + s.print_state_cairo()
+                tot = '(\"'+self.category+'\"' + m + ' )'
+
+        #print("<=" + tot)        
+        return tot
+
+    def return_state_list(self):
+        if len(self.content) == 0:
+            if self.decided == True:
+                tot = self.category
+            else:
+                tot = [self.category,"?"]
+        else:
+            tot = []
+            tot.append(self.category)
+            for s in self.content:
+                tot.append(s.return_state_list())
+        return tot
+
+    def print_id(self):
+        return str(self.id) 
+
+    #木の深さを返す
+    def return_height(self,height=0):
+        height = height + 1
+        for s in self.content:
+            height = s.return_height(height)
+
+        return height
+
+    #深さ優先で最左未決定項を探す
+    def lvt(self,temp=""):
+        #print("-> " + self.category)
+        #停止条件
+        if self.content == []:
+            if self.decided == False:
+                if temp == "":
+                    return self.category
+                else:
+                    return temp
+            else:
+                return ""
+
+        for s in self.content:
+            temp = s.lvt(temp)
+            #print("temp := " + temp) 
+        
+        return temp
+
+    #項の置き換え
+    def replace(self,term,flag=True):
+        if self.content == []:
+            if (self.decided == False) and (flag):
+                #print("(rewrite)==>" + self.category + str(flag))
+                self.content = term.content
+                self.decided = True
+                return False
+        for s in self.content:
+            #print("==>" + s.category + str(s.decided)+str(flag))
+            flag = s.replace(term,flag)
+
+        return flag
+
+"""
+Chart class
+"""
+
+class Chart:
+    def __init__(self):
+        self.chart = [] #List
+        self.number = 1
+
+    def push(self,state):
+        self.chart.append(state)
+        state.setId(self.number)
+        self.number += 1
+
+    def print_chart(self):
+        for s in self.chart:
+            prob = "prob : " + str(s.prob) #HACK:もうちょいきれいに
+            readable_log = "(" + s.print_id() + ") "+ prob +  "\n" + s.print_state()
+            tex_log = "(" + s.print_id() + ") "+ prob +  "\n" + "$" + s.print_state_tex() + "$"
+            cairo_log = "(" + s.print_id() + ") "+ prob +  "\n" + s.print_state_cairo()
+            print(readable_log)
+            if LOG_FORMAT==0:
+                logging(readable_log+'\n')
+            elif LOG_FORMAT==1:
+                logging(tex_log+'\n')
+            elif LOG_FORMAT==2:
+                tuple_var = ()
+                logging(cairo_log+'\n')  
+            else:
+                pass
+
+    def get_chart(self):
+        return self.chart
+
+
+"""
+util function
+"""
+
+def category_generator(file_name):
+    global Category
+
+    with open(file_name, 'r') as f:
+        non_terminals = [v.rstrip() for v in f.readlines()]
+    Category.extend(non_terminals)
+    #print(Category)
+
+def lexicon_generator(file_name):
+    global Lexicon
+
+    with open(file_name, 'r') as f:
+        rules = [v.rstrip() for v in f.readlines()]
+    
+    for r in rules:
+        array = r.split(' ')
+        key = array[2]
+        value = array[0]
+        Lexicon.setdefault(key,[]).append(value)
+    #print(Lexicon)
+
+def grammar_generator(file_name):
+    global Grammar
+    with open(file_name, 'r') as f:
+        rules = [v.rstrip() for v in f.readlines()]
+    
+    for r in rules:
+        array = r.split(' ')
+        lhs = array[0]
+        rhs = []
+        include_prob = False
+        prob = 0.0 
+        for rh in array[2:] :
+            result = re.search(r'\[(.*)\]',rh)
+            if result:
+                #matchする->確率部である 
+                prob = float(result.groups()[0])
+                include_prob = True
+                #print(prob)
+            else:
+                #ただの右辺
+                #print(rh)
+                rhs.append(rh)  
+                
+        if include_prob:
+            #確率あり
+            Grammar.append(Rule(lhs,rhs,prob))
+        else:
+            #確率なし
+            Grammar.append(Rule(lhs,rhs))
+
+def logging(str):
+    with open(FILE_NAME, 'a') as f:
+                f.write(str)
+
+
+'''
+Chart_Parsing本体
+'''
+def Chrat_Parsing(global_chart,w):
+    local_chart = Chart()
+    temp = Chart()
+    
+    print("===init===")
+    print("Global")
+    st ="========= " + w + " is inputed =========\n"
+    #logging(st)
+    print(st)
+    # global_chart.print_chart()
+    #step1 Consulting Dictionary
+    for cat in Category:  
+        if cat in Lexicon[w]:
+            local_chart.push(State(cat,[State(w,[])],1.0))
+    print("===step1===")
+    print("Local")
+    st = "===step1===\n===Local===\n"
+    #logging(st)
+    #local_chart.print_chart()
+
+    #step2 Application Rules
+    already_used_lrules = [] 
+    #下記local_chartの中で同じ左再帰ルール適用は一度だけ
+    for a in local_chart.get_chart():
+        # print("\n==state==")
+        # print("height : "+ str(a.return_height()))
+        # print(a.print_state())
+        # a: State
+        #木の深さチェック
+        if( a.return_height() < Depth_Limit):
+            for g in Grammar:
+                # g : each grammar
+                #左再帰ルールチェック
+                if(g.left == g.right[0]): 
+                    #左再帰だった時
+                    #既に使われていないか？
+                    if(g not in already_used_lrules):
+                        #ルール適用可能か?(右辺の第一項が現在のlocal chartのカテゴリと等しいか？)
+                        if g.right[0] == a.category:
+                            subseq = [a]
+                            for right in g.right[1:]:
+                                subseq.append(State(right,[],decided=False))
+                            print("grammar->",g.print_rule())
+                            #TODO:g.probがNoneの時の処理    
+                            local_chart.push(State(g.left,subseq,a.prob*g.prob))
+                        already_used_lrules.append(g)
+                else:
+                    #左再帰ではなかった時  
+                    #ルール適用可能か?(右辺の第一項が現在のlocal chartのカテゴリと等しいか？)    
+                    if g.right[0] == a.category:
+                        subseq = [a]
+                        for right in g.right[1:]:
+                            subseq.append(State(right,[],decided=False))
+                        print("grammar-->",g.print_rule())
+                        #TODO:g.probがNoneの時の処理    
+                        local_chart.push(State(g.left,subseq,a.prob*g.prob))
+    print("===step2===")
+    print("Local")
+    st = "===step2===\n===Local===\n"
+    #logging(st)
+    #local_chart.print_chart()    
+
+    print("===step3===")        
+    #step3 Replacing Terms
+    print("global_len ",len(global_chart.get_chart()))
+    print("local_len",len(local_chart.get_chart()))
+
+    for g in global_chart.get_chart():
+        for l in local_chart.get_chart():
+            if g.lvt() == l.category:
+                #print("match")
+                #print(g.print_state())
+                #print("g.lvt() = " + g.lvt())
+                t = copy.deepcopy(g)
+                print("tree:")
+                print(t.print_state())
+                print(t.prob)
+                print("local:")
+                print(l.print_state()) 
+                print(l.prob)
+                t.replace(l) #項の置き換え
+                #挿入するlocal_chartの確率を掛け算
+                t.prob  = t.prob * l.prob
+                #print(t.print_state())
+                temp.push(t)
+                #print("----------------")
+    global_chart = temp
+    print("Global")
+    st = "===Global===\n"
+    # logging(st)
+    # global_chart.print_chart()
+
+
+    return global_chart
+    
+
+class ParseError(Exception):
+    pass
+
+
+def save_gchart(g_chart,parsed_chord=""):
+    trees = []
+    for state in g_chart.get_chart():
+        tree = state.return_state_list()
+        trees.append({"id":state.id,"prob":state.prob,"tree":tree})
+    
+    sorted_trees = sorted(trees, key=lambda x:x['prob'], reverse=True)
+    # print(sorted_trees[:10])
+    #pklで保存    
+    pd.to_pickle(sorted_trees,PKL_DATA_PATH+parsed_chord+".pkl")
+
+
+
+
+def main():
+    g_chart = Chart()
+
+    #TODO:rootはとりあえずC^7にしておく
+    g_chart.push(State("C^7",[],decided=False))
+
+    #なんか入ってたら削除
+    for f in glob.glob(PKL_DATA_PATH+'/*.pkl'):
+        os.remove(f)
+
+    with open(ANALYSIS_TARGET_FILE,"r") as f:
+        line = f.read().replace('\n','')
+    words = line.split(" ")
+    
+    #words = ["Dmin7","G7","Emin7","A7","Amin7","D7","Abmin7","Db7","Cmaj7"]
+    #words = ["Dmin7","G7","Cmaj7"]
+
+    with open(FILE_NAME, 'w') as f:
+        f.write("input sequence : ")
+        for s in words:
+            f.write(s + " ")
+        f.write("\n")
+
+    category_generator(FILE_NAME_NONTERMINAL)
+    lexicon_generator(FILE_NAME_LEXICON)
+    grammar_generator(FILE_NAME_GRAMMAR)
+
+    print()
+    
+    #Grammar表示
+    # for g in Grammar:
+    #      print(g.print_rule())
+
+    #解析本体
+
+    try:
+        for idx,w in enumerate(words):
+            if g_chart is None:
+                raise ParseError("Error! : Global Chart is empty")
+            g_chart = Chrat_Parsing(g_chart,w)
+            save_gchart(g_chart,"".join(words[:idx+1]))    
+
+    except ParseError as e:
+        print(e)
+
+if __name__ == "__main__":
+    main()
