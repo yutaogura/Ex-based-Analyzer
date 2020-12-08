@@ -31,16 +31,16 @@ export default {
   },
   methods:{
     return_file_name: function(src){
-      console.log("--->")
+      // console.log("--->")
       var temp = src.replace(/^.*[\\\/rank]ob_/, '');
       var temp2 = temp.replace(".svg",'');
-      console.log(temp2);
+      // console.log(temp2);
       return temp2;
     },
     imageSrc: function(src){
       if(src){
         src = "file://" + src;
-        console.log(src);
+        // console.log(src);
         return src;
       }else{
         console.log("hogehoge" + this.default_src);

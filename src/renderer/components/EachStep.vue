@@ -56,14 +56,19 @@ export default {
     };
   },
   created: function () {
-    console.log("created");
+    //console.log("created");
     //this.searchandappend();
   },
   mounted: function () {
     console.log("mounted");
     this.searchandappend();
   },
+  beforeUpdate: function () {
+    //console.log("Beforepdate");
+    //this.searchandappend();
+  },
   updated: function () {
+    //console.log("update");
     //this.searchandappend();
   },
   methods: {
@@ -75,10 +80,10 @@ export default {
       const stdout = execSync("ls -d1 $PWD" + path);
       const urls = stdout.toString().split("\n");
       urls.pop();
-      //console.log(urls);
+      console.log(urls);
       for (var item in urls) {
         this.appendSlide(urls[item]);
-        console.log(urls[item]);
+        //console.log(urls[item]);
       }
     },
     showFileInputDialog: function (event) {

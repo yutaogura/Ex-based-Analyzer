@@ -5,7 +5,6 @@
         <v-text-field
           label="chord sequence"
           v-model="sequence_data"
-          ref="hogehoge"
           v-on:keyup.enter="submitText"
           outlined
           clearable
@@ -17,7 +16,7 @@
         <!-- v-forの引数でindexを指定 -->
         <div v-for="(value, index) in sequence" :key="index">
            <!-- メソッドにindexを渡す -->
-          <each-step :sequence="sequence.slice(0, index + 1)" />
+          <each-step :ref="'childe'+index" :sequence="sequence.slice(0, index + 1)" />
         </div>
       </div>
     </no-ssr>
@@ -48,24 +47,31 @@ export default {
     },
   },
   methods: {
-    submitText: function (event) {
+
+    async resetSequence(){
+      this.sequence.splice(0);
+      console.log(this.sequence);
+      return "done"
+    }
+    ,
+    async submitText(event) {
       const { dialog } = require("electron").remote;
-      this.sequence = this.sequence_data.split(" ");
 
-
-      //analyseボタン押下で子のメソッド発火?
-      //console.log(this.$refs);
       // this.$refs.EachStep.searchandappend();
 
       // TODO:check vaild chord symbol
       // dialog.showErrorBox("Error", "無効なコードシンボルが含まれています");
+
+      //初期化
+      const result = await this.resetSequence();
+      console.log(result);
 
       //target.txtへの書き込み
       var fs = require("fs");
       // 同期で行う場合
       try {
         fs.writeFileSync("py/target.txt", this.sequence_data);
-        console.log("write end");
+        console.log("target.txt is writed");
       } catch (e) {
         console.log(e);
       }
@@ -80,8 +86,16 @@ export default {
         detached: true,
         stdio: 'ignore'
       })
-      console.log(`stdout: ${stdout.toString()}`)
-
+      //console.log(`stdout: ${stdout.toString()}`)
+      //analyseボタン押下で子のメソッド発火?
+      // console.log(this.$refs);
+      // for (var step in this.$refs){
+      //       console.log(step);
+      //       //step.searchandappend();
+      // }
+      //代入
+      this.sequence = this.sequence_data.split(" ");
+      console.log(this.sequence);
     },
   },
 };
