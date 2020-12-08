@@ -26,7 +26,7 @@
 
 <script>
 import ImageCard from "@/components/ImageCard.vue";
-const fs = require("fs");
+const {spawnSync,execSync} = require("child_process");
 
 export default {
   name: "EachStep",
@@ -74,13 +74,22 @@ export default {
   methods: {
     searchandappend: function () {
       var dir = this.sequence.join("");
-      var path = "/py/svg/" + dir + "/*";
+      var path = "$PWD/py/svg/" + dir + "/*";
       // TODO:めちゃくちゃハードコーディンくしちゃってる
-      const { execSync } = require("child_process");
-      const stdout = execSync("ls -d1 $PWD" + path);
-      const urls = stdout.toString().split("\n");
+
+      // const stdout = spawnSync('python',["./py/main.py"],{
+      //   detached: true,
+      //   stdio: 'ignore'
+      // })
+
+      //execで書く
+      //const stdout = execSync("ls -d1 $PWD" + path);
+      //const urls = stdout.toString().split("\n");
+      //spawnで書く spawnはストリームで帰ってくる
+      const spawn = spawnSync('ls',['-d1',path], { shell: true});
+      var urls = spawn.stdout.toString().split("\n");
       urls.pop();
-      console.log(urls);
+      //console.log(urls);
       for (var item in urls) {
         this.appendSlide(urls[item]);
         //console.log(urls[item]);

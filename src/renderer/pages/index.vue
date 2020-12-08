@@ -13,7 +13,7 @@
             <v-btn color="primary" @click="submitText">Analyse</v-btn>
           </template>
         </v-text-field>
-        <div class="loader">Loading...</div>
+        <div class="loader" v-show="show">Loading...</div>
         <!-- v-forの引数でindexを指定 -->
         <div v-for="(value, index) in sequence" :key="index">
            <!-- メソッドにindexを渡す -->
@@ -30,6 +30,10 @@ import SystemInformation from "@/components/SystemInformation.vue";
 import ImageCard from "@/components/ImageCard.vue";
 import EachStep from "@/components/EachStep.vue";
 import '@/assets/css/loading.css';
+const {spawnSync,spawn} = require('child_process')
+const util = require('util');
+const childProcess = require('child_process');
+const exec = util.promisify(childProcess.exec);
 
 export default {
   components: {
@@ -38,6 +42,7 @@ export default {
   },
   data() {
     return {
+      show:false,
       externalContent: "",
       sequence: [],
       sequence_data: "",
@@ -54,8 +59,17 @@ export default {
     async resetSequence(){
       this.sequence.splice(0);
       console.log(this.sequence);
-      return "done"
-    }
+      return "done";
+    },
+    async makeSVG(){
+      const p = new Promise((resolve,reject)=>{
+         const stdout = spawn('python',["./py/main.py"],{
+          detached: true,
+          stdio: 'ignore'
+      })
+      })
+      return p;
+    } 
     ,
     async submitText(event) {
       const { dialog } = require("electron").remote;
@@ -66,6 +80,7 @@ export default {
       // dialog.showErrorBox("Error", "無効なコードシンボルが含まれています");
 
       //初期化
+      this.show = true;
       const result = await this.resetSequence();
       console.log(result);
 
@@ -83,22 +98,14 @@ export default {
       //const { spawn } = require('child_process')
       //const childProcess = spawn('python', ['./py/main.py'])
 
+
       //child processとしてコマンド実行
-      const { spawnSync} = require('child_process')
-      const stdout = spawnSync('python',["./py/main.py"],{
-        detached: true,
-        stdio: 'ignore'
-      })
-      //console.log(`stdout: ${stdout.toString()}`)
-      //analyseボタン押下で子のメソッド発火?
-      // console.log(this.$refs);
-      // for (var step in this.$refs){
-      //       console.log(step);
-      //       //step.searchandappend();
-      // }
+      await exec('python ./py/main.py');
+
       //代入
       this.sequence = this.sequence_data.split(" ");
       console.log(this.sequence);
+      this.show = false;
     },
   },
 };

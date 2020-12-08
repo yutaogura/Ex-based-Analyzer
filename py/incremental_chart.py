@@ -43,6 +43,7 @@ Grammar = []
 Depth_Limit = 5
 
 
+
 """
 Rule class 
 """
@@ -299,8 +300,8 @@ def Chrat_Parsing(global_chart,w):
     local_chart = Chart()
     temp = Chart()
     
-    print("===init===")
-    print("Global")
+    # print("===init===")
+    # print("Global")
     st ="========= " + w + " is inputed =========\n"
     #logging(st)
     print(st)
@@ -309,8 +310,8 @@ def Chrat_Parsing(global_chart,w):
     for cat in Category:  
         if cat in Lexicon[w]:
             local_chart.push(State(cat,[State(w,[])],1.0))
-    print("===step1===")
-    print("Local")
+    # print("===step1===")
+    # print("Local")
     st = "===step1===\n===Local===\n"
     #logging(st)
     #local_chart.print_chart()
@@ -351,16 +352,16 @@ def Chrat_Parsing(global_chart,w):
                         print("grammar-->",g.print_rule())
                         #TODO:g.probがNoneの時の処理    
                         local_chart.push(State(g.left,subseq,a.prob*g.prob))
-    print("===step2===")
-    print("Local")
+    # print("===step2===")
+    # print("Local")
     st = "===step2===\n===Local===\n"
     #logging(st)
     #local_chart.print_chart()    
 
-    print("===step3===")        
+    # print("===step3===")        
     #step3 Replacing Terms
-    print("global_len ",len(global_chart.get_chart()))
-    print("local_len",len(local_chart.get_chart()))
+    # print("global_len ",len(global_chart.get_chart()))
+    # print("local_len",len(local_chart.get_chart()))
 
     for g in global_chart.get_chart():
         for l in local_chart.get_chart():
@@ -369,12 +370,12 @@ def Chrat_Parsing(global_chart,w):
                 #print(g.print_state())
                 #print("g.lvt() = " + g.lvt())
                 t = copy.deepcopy(g)
-                print("tree:")
-                print(t.print_state())
-                print(t.prob)
-                print("local:")
-                print(l.print_state()) 
-                print(l.prob)
+                # print("tree:")
+                # print(t.print_state())
+                # print(t.prob)
+                # print("local:")
+                # print(l.print_state()) 
+                # print(l.prob)
                 t.replace(l) #項の置き換え
                 #挿入するlocal_chartの確率を掛け算
                 t.prob  = t.prob * l.prob
@@ -382,7 +383,7 @@ def Chrat_Parsing(global_chart,w):
                 temp.push(t)
                 #print("----------------")
     global_chart = temp
-    print("Global")
+    # print("Global")
     st = "===Global===\n"
     # logging(st)
     # global_chart.print_chart()
@@ -436,7 +437,7 @@ def main():
     lexicon_generator(FILE_NAME_LEXICON)
     grammar_generator(FILE_NAME_GRAMMAR)
 
-    print()
+    # print()
     
     #Grammar表示
     # for g in Grammar:
