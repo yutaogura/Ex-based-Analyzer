@@ -13,6 +13,7 @@
             <v-btn color="primary" @click="submitText">Analyse</v-btn>
           </template>
         </v-text-field>
+        <div class="loader">Loading...</div>
         <!-- v-forの引数でindexを指定 -->
         <div v-for="(value, index) in sequence" :key="index">
            <!-- メソッドにindexを渡す -->
@@ -28,6 +29,7 @@ import { remote } from "electron";
 import SystemInformation from "@/components/SystemInformation.vue";
 import ImageCard from "@/components/ImageCard.vue";
 import EachStep from "@/components/EachStep.vue";
+import '@/assets/css/loading.css';
 
 export default {
   components: {
@@ -39,6 +41,7 @@ export default {
       externalContent: "",
       sequence: [],
       sequence_data: "",
+      loading: false,
     };
   },
   computed: {
