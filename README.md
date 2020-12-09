@@ -18,8 +18,14 @@ yarn run dev
 # build electron application for production
 yarn run build
 
-
 ```
+## Tips
+### git
+.gitignore を後から追加
+- ファイル削除
+  ``` git rm hogehoge.txt ```
+- キャッシュ削除
+  ``` git rm --cached hogehoge.txt ```
 
 ---
 
