@@ -38,6 +38,7 @@ const util = require("util");
 const childProcess = require("child_process");
 const exec = util.promisify(childProcess.exec);
 const chordname_regexp = /^[ABCDEFG][b]*(|7|\^7|m7|aug|aug7|dim|dim7|sus|sus4)$/;
+const fs = require("fs");
 
 export default {
   components: {
@@ -98,18 +99,12 @@ export default {
       console.log(result);
 
       //target.txtへの書き込み
-      var fs = require("fs");
-      // 同期で行う場合
       try {
         fs.writeFileSync("py/target.txt", this.sequence_data);
         console.log("target.txt is writed");
       } catch (e) {
         console.log(e);
       }
-
-      //非同期実行
-      //const { spawn } = require('child_process')
-      //const childProcess = spawn('python', ['./py/main.py'])
 
       //child processとしてコマンド実行
       await exec("python ./py/main.py", { maxBuffer: 1024 * 1024 });
