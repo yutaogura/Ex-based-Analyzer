@@ -100,7 +100,7 @@ export default {
 
 
       //child processとしてコマンド実行
-      await exec('python ./py/main.py');
+      await exec('python ./py/main.py',{ maxBuffer: 1024 * 1024 });
 
       //代入
       this.sequence = this.sequence_data.split(" ");

@@ -304,7 +304,7 @@ def Chrat_Parsing(global_chart,w):
     # print("Global")
     st ="========= " + w + " is inputed =========\n"
     #logging(st)
-    print(st)
+    # print(st)
     # global_chart.print_chart()
     #step1 Consulting Dictionary
     for cat in Category:  
@@ -338,7 +338,7 @@ def Chrat_Parsing(global_chart,w):
                             subseq = [a]
                             for right in g.right[1:]:
                                 subseq.append(State(right,[],decided=False))
-                            print("grammar->",g.print_rule())
+                            # print("grammar->",g.print_rule())
                             #TODO:g.probがNoneの時の処理    
                             local_chart.push(State(g.left,subseq,a.prob*g.prob))
                         already_used_lrules.append(g)
@@ -349,7 +349,7 @@ def Chrat_Parsing(global_chart,w):
                         subseq = [a]
                         for right in g.right[1:]:
                             subseq.append(State(right,[],decided=False))
-                        print("grammar-->",g.print_rule())
+                        # print("grammar-->",g.print_rule())
                         #TODO:g.probがNoneの時の処理    
                         local_chart.push(State(g.left,subseq,a.prob*g.prob))
     # print("===step2===")

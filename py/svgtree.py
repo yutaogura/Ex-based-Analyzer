@@ -25,20 +25,20 @@ def main():
 
     #tempフォルダ内のファイルを読み込む
     files = os.listdir(PKL_DATA_PATH)
-    print(files)
+    # print(files)
 
     for pkl_file_name in files:
 
         #svgファイルの保存場所確保
         parsed_chord = pkl_file_name.replace(".pkl","")
-        print(parsed_chord)
+        # print(parsed_chord)
         svg_save_dir = SVG_DATA_PATH+parsed_chord   
         if not os.path.exists(svg_save_dir):
             os.makedirs(svg_save_dir)
 
         #pkl展開->tree書き出し
         trees = pd.read_pickle(PKL_DATA_PATH + pkl_file_name)
-        print(trees)
+        # print(trees)
 
         for idx,tree in enumerate(trees):
             if idx < DRAWING_THRESHOLD:
