@@ -1,15 +1,14 @@
 <template>
   <div>
     {{ sequence.join(" ") }}
-    <v-btn icon color="green" @click="showFileInputDialog"
+
+    <!-- 任意画像選択と削除ボタン -->
+    <!-- <v-btn icon color="green" @click="showFileInputDialog"
       ><v-icon>mdi-folder-multiple-image</v-icon></v-btn
-    >
-    <v-btn icon color="green" @click="appendSlide"
-      ><v-icon>mdi-plus-circle</v-icon></v-btn
     >
     <v-btn icon color="green" @click="clearSlide"
       ><v-icon>mdi-trash-can</v-icon></v-btn
-    >
+    > -->
     <v-btn icon color="green" @click="playSound"
       ><v-icon>mdi-volume-high</v-icon></v-btn
     >
