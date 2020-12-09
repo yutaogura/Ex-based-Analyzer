@@ -31,6 +31,8 @@ import ImageCard from "@/components/ImageCard.vue";
 const Tone = require('tone');
 const {spawnSync,execSync} = require("child_process");
 
+const SvgSrcUrl = '/py/svg/';
+
 export default {
   name: "EachStep",
   components: {
@@ -60,44 +62,32 @@ export default {
   },
   created: function () {
     //console.log("created");
-    //this.searchandappend();
   },
   mounted: function () {
     console.log("mounted");
-    this.searchandappend();
+    this.SearchAppendSlide();
   },
   beforeUpdate: function () {
     //console.log("Beforepdate");
-    //this.searchandappend();
   },
   updated: function () {
     //console.log("update");
-    //this.searchandappend();
   },
   methods: {
-    searchandappend: function () {
+    SearchAppendSlide: function () {
       var dir = this.sequence.join("");
-      var path = "$PWD/py/svg/" + dir + "/*";
-      // TODO:めちゃくちゃハードコーディンくしちゃってる
+      var path = "$PWD/"+ SvgSrcUrl + dir + "/*";
 
-      // const stdout = spawnSync('python',["./py/main.py"],{
-      //   detached: true,
-      //   stdio: 'ignore'
-      // })
-
-      //execで書く
-      //const stdout = execSync("ls -d1 $PWD" + path);
-      //const urls = stdout.toString().split("\n");
-      //spawnで書く spawnはストリームで帰ってくる
       const spawn = spawnSync('ls',['-d1',path], { shell: true});
       var urls = spawn.stdout.toString().split("\n");
-      urls.pop();
-      //console.log(urls);
+      urls.pop(); //リスト末尾の空白文字を除去
+      // console.log(urls);
+
       for (var item in urls) {
         this.appendSlide(urls[item]);
-        //console.log(urls[item]);
       }
     },
+
     showFileInputDialog: function (event) {
       const { dialog } = require("electron").remote;
       let src = dialog.showOpenDialogSync(null, {
@@ -108,7 +98,7 @@ export default {
       });
       for (var item in src) {
         this.appendSlide(src[item]);
-        console.log(src[item]);
+        // console.log(src[item]);
       }
     },
     appendSlide: function (src) {
@@ -124,7 +114,6 @@ export default {
       this.cards.splice(0);
       this.count = 0;
     },
-    //setplay: function(time,note){synth.triggerAttackRelease(note,'4n',time);},
     playSound: function(){
       var Dm7 = ['D3', 'F4', 'A4', 'C5', 'E5'];
       var G7 = ['G3', 'F4','A4','B4','D5'];

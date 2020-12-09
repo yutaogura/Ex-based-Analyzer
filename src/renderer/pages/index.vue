@@ -16,8 +16,11 @@
         <div class="loader" v-show="show">Loading...</div>
         <!-- v-forの引数でindexを指定 -->
         <div v-for="(value, index) in sequence" :key="index">
-           <!-- メソッドにindexを渡す -->
-          <each-step :ref="'childe'+index" :sequence="sequence.slice(0, index + 1)" />
+          <!-- メソッドにindexを渡す -->
+          <each-step
+            :ref="'childe' + index"
+            :sequence="sequence.slice(0, index + 1)"
+          />
         </div>
       </div>
     </no-ssr>
@@ -29,11 +32,12 @@ import { remote } from "electron";
 import SystemInformation from "@/components/SystemInformation.vue";
 import ImageCard from "@/components/ImageCard.vue";
 import EachStep from "@/components/EachStep.vue";
-import '@/assets/css/loading.css';
-const {spawnSync,spawn} = require('child_process')
-const util = require('util');
-const childProcess = require('child_process');
+import "@/assets/css/loading.css";
+const { spawnSync, spawn } = require("child_process");
+const util = require("util");
+const childProcess = require("child_process");
 const exec = util.promisify(childProcess.exec);
+const chordname_regexp = /^[ABCDEFG][b]*(|7|\^7|m7|aug|aug7|dim|dim7|sus|sus4)$/;
 
 export default {
   components: {
@@ -42,7 +46,7 @@ export default {
   },
   data() {
     return {
-      show:false,
+      show: false,
       externalContent: "",
       sequence: [],
       sequence_data: "",
@@ -55,29 +59,38 @@ export default {
     },
   },
   methods: {
-
-    async resetSequence(){
+    checkCharacter(str) {
+      if (str.match(chordname_regexp) == null) {
+        return false;
+      } else {
+        //console.log(str.match(chordname_regexp));
+        return true;
+      }
+    },
+    async resetSequence() {
       this.sequence.splice(0);
       console.log(this.sequence);
       return "done";
     },
-    async makeSVG(){
-      const p = new Promise((resolve,reject)=>{
-         const stdout = spawn('python',["./py/main.py"],{
+    async makeSVG() {
+      const p = new Promise((resolve, reject) => {
+        const stdout = spawn("python", ["./py/main.py"], {
           detached: true,
-          stdio: 'ignore'
-      })
-      })
+          stdio: "ignore",
+        });
+      });
       return p;
-    } 
-    ,
+    },
     async submitText(event) {
       const { dialog } = require("electron").remote;
+      var sep_sequence = this.sequence_data.split(" ");
 
-      // this.$refs.EachStep.searchandappend();
-
-      // TODO:check vaild chord symbol
-      // dialog.showErrorBox("Error", "無効なコードシンボルが含まれています");
+      for (var symbol in sep_sequence) {
+        if (!this.checkCharacter(sep_sequence[symbol])) {
+          dialog.showErrorBox("Error", "無効なコードシンボルが含まれています");
+          return;
+        }
+      }
 
       //初期化
       this.show = true;
@@ -98,9 +111,8 @@ export default {
       //const { spawn } = require('child_process')
       //const childProcess = spawn('python', ['./py/main.py'])
 
-
       //child processとしてコマンド実行
-      await exec('python ./py/main.py',{ maxBuffer: 1024 * 1024 });
+      await exec("python ./py/main.py", { maxBuffer: 1024 * 1024 });
 
       //代入
       this.sequence = this.sequence_data.split(" ");

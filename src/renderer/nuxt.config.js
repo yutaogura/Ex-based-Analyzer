@@ -7,7 +7,7 @@
 
 module.exports = {
   head: {
-    title: 'pcfg-app',
+    title: 'Ex-parsing Viewer',
     meta: [{ charset: "utf-8" }]
   },
   loading: false,

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import SVGElement from "@/components/SVGElement.vue"
+import SVGElement from "@/components/SVGElement.vue";
 export default {
   name: "ImageCard",
   props: ["num","src"],
@@ -40,10 +40,8 @@ export default {
     imageSrc: function(src){
       if(src){
         src = "file://" + src;
-        // console.log(src);
         return src;
       }else{
-        console.log("hogehoge" + this.default_src);
         return this.default_src;
       }
     }
