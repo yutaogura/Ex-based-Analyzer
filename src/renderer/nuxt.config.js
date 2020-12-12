@@ -7,7 +7,7 @@
 
 module.exports = {
   head: {
-    title: 'Ex-parsing Viewer',
+    title: 'Ex-based Chord Sequence Analyzer',
     meta: [{ charset: "utf-8" }]
   },
   loading: false,
