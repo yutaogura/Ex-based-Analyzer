@@ -28,10 +28,11 @@
 
 <script>
 import ImageCard from "@/components/ImageCard.vue";
-const Tone = require('tone');
-const {spawnSync,execSync} = require("child_process");
+import chord from "@/const.js"; //定数を別ファイルにやる方法
+const Tone = require("tone");
+const { spawnSync, execSync } = require("child_process");
 
-const SvgSrcUrl = '/py/svg/';
+const SvgSrcUrl = "/py/svg/";
 
 export default {
   name: "EachStep",
@@ -76,9 +77,9 @@ export default {
   methods: {
     SearchAppendSlide: function () {
       var dir = this.sequence.join("");
-      var path = "$PWD/"+ SvgSrcUrl + dir + "/*";
+      var path = "$PWD/" + SvgSrcUrl + dir + "/*";
 
-      const spawn = spawnSync('ls',['-d1',path], { shell: true});
+      const spawn = spawnSync("ls", ["-d1", path], { shell: true });
       var urls = spawn.stdout.toString().split("\n");
       urls.pop(); //リスト末尾の空白文字を除去
       // console.log(urls);
@@ -114,31 +115,84 @@ export default {
       this.cards.splice(0);
       this.count = 0;
     },
-    playSound: function(){
-      var Dm7 = ['D3', 'F4', 'A4', 'C5', 'E5'];
-      var G7 = ['G3', 'F4','A4','B4','D5'];
-      var CM7 = ['C3', 'E4', 'G4','B4','D5'];
-      var A7 = ['A3', 'Db4','E4','G4', 'A4']
-      const sequence =[['0:0:0', Dm7],
-                      ['0:1:0', G7],
-                      ['0:2:0', CM7],
-                      ['0:3:0',A7]];
+    returnMidiSequence: function (sequence) {
+      var play_sequence = [];
+      var measure = 0;
+      var bar = 0;
+      var tick = 0;
+      for (var i = 0; i < sequence.length; i++) {
+        console.log(sequence[i]);
+        //文字列からルートとコードタイプを抜き出して適切なroot_num,chord_type_numを割り当てる
+        var chord_root_num = 8;
+        var chord_type_num = 2;
 
+        var root_note_name3 = [
+          "C3",
+          "C#3",
+          "D3",
+          "D#3",
+          "E3",
+          "F3",
+          "F#3",
+          "G3",
+          "G#3",
+          "A3",
+          "A#3",
+          "B3",
+        ];
+        var maj_array = [0, 4, 7, 11];
+        var min_array = [0, 3, 7, 10];
+        var dom_array = [0, 4, 7, 10];
+        var hdim_array = [0, 3, 6, 10];
+        var dim7_array = [0, 3, 6, 9];
+        var minMaj7_array = [0, 3, 7, 11];
+        var aug7_array = [0, 4, 8, 11];
+
+        var chord_type = [
+          maj_array,
+          min_array,
+          dom_array,
+          hdim_array,
+          dim7_array,
+          minMaj7_array,
+          aug7_array,
+        ];
+        var tone_array = Tone.Frequency(
+          root_note_name3[chord_root_num]
+        ).harmonize(chord_type[chord_type_num]);
+
+        var time_record = measure + ":"+ bar+ ":" + tick;  //0:0:0
+        console.log(time_record);
+        play_sequence.push([time_record, tone_array]);
+        if(bar != 3){
+          bar++;
+        }else{
+          bar = 0;
+          measure++;
+        }
+      }
+      console.log(play_sequence);
+      return play_sequence;
+    },
+    playSound: function () {
+      var play_sequence = this.returnMidiSequence(this.sequence);
 
       var synth = new Tone.PolySynth().toDestination();
-      function setplay(time,note){synth.triggerAttackRelease(note,'4n',time);};
-      const melody = new Tone.Part(setplay,sequence);
+      function setplay(time, note) {
+        synth.triggerAttackRelease(note, "4n", time);
+      }
+      const melody = new Tone.Part(setplay, play_sequence);
       // melody.stop();
       // melody.start();
       //ループ回数
-      melody.loop = 0; 
+      melody.loop = 0;
       //テンポ
       Tone.Transport.bpm.value = 60;
       //再生実行
-      Tone.Transport.cancel()
+      Tone.Transport.cancel();
       melody.start();
-      Tone.Transport.start(); 
-    }
+      Tone.Transport.start();
+    },
   },
 };
 </script>
