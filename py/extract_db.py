@@ -75,6 +75,19 @@ def key_normalize_chord(chord, key):
     # We're using the flats for now
     return flats[chord_normalized_numeric_pitch] + chord_minor + chord_quality
 
+def key_nonnormalize_chord(chord,key):
+    regex = re.compile("([A-G][b#]?)([m]?)(.*)")
+    
+    (chord_pitch,chord_minor,chord_quality) = regex.match(chord).groups()
+    
+    chord_numeric_pitch = note_norm[chord_pitch]
+
+    # ハーフディミニッシュ%とメジャー^をhdim，Mに置き換え
+    chord_quality = replace_badsymbol(chord_quality)
+
+    # We're using the flats for now
+    return flats[chord_numeric_pitch] + chord_minor + chord_quality
+
 def key_is_minor(key):
     regex = re.compile("([A-G][b#]?)([m]?)(.*)")
     (key_pitch,  key_minor,  key_quality  ) = regex.match(key).groups()
@@ -110,12 +123,12 @@ def get_rules(t,key):
         lefts = get_rules(t['children'][0],key)
         if len(t['children']) == 2 :
             rights = get_rules(t['children'][1],key)
-            return [(key_normalize_chord(t['label'],key) , (
-                                   key_normalize_chord(t['children'][0]['label'],key),
-                                   key_normalize_chord(t['children'][1]['label'],key)
+            return [(key_nonnormalize_chord(t['label'],key) , (
+                                   key_nonnormalize_chord(t['children'][0]['label'],key),
+                                   key_nonnormalize_chord(t['children'][1]['label'],key)
             ))] + lefts + rights
         else:
-            return [(key_normalize_chord(t['label'],key) , (key_normalize_chord(t['children'][0]['label'],key)), key)] + lefts
+            return [(key_nonnormalize_chord(t['label'],key) , (key_nonnormalize_chord(t['children'][0]['label'],key)), key)] + lefts
 
 
 
