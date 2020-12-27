@@ -34,7 +34,7 @@ export default {
       // console.log("--->")
       var temp = src.replace(/^.*[\\\/rank]ob_/, '');
       var temp2 = temp.replace(".svg",'');
-      // console.log(temp2);
+      console.log(src);
       return temp2;
     },
     imageSrc: function(src){

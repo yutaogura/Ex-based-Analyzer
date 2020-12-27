@@ -32,7 +32,7 @@ import chord from "@/const.js"; //定数を別ファイルにやる方法
 const Tone = require("tone");
 const { spawnSync, execSync } = require("child_process");
 
-const SvgSrcUrl = "/py/svg/";
+const SvgSrcUrl = "py/svg/";
 
 export default {
   name: "EachStep",

@@ -38,6 +38,7 @@ ANALYSIS_TARGET_FILE = "./py/target.txt"
 FILE_NAME_NONTERMINAL = "./py/nonterminals.txt"
 FILE_NAME_LEXICON = "./py/lexicon.txt"
 FILE_NAME_GRAMMAR = "./py/pcfg.txt"
+FILE_TONIC_CHORD = "./py/tonic.txt"
 Category = []
 Lexicon = {}
 Grammar = []
@@ -410,13 +411,24 @@ def save_gchart(g_chart,parsed_chord=""):
     pd.to_pickle(sorted_trees,PKL_DATA_PATH+parsed_chord+".pkl")
 
 
+def set_root(g_chart):
+
+    with open(FILE_TONIC_CHORD, 'r') as f:
+        tonics = [v.rstrip() for v in f.readlines()]
+
+    for tonic in tonics:
+        g_chart.push(State(tonic,[],decided=False))           
 
 
 def main():
     g_chart = Chart()
 
-    #TODO:rootはとりあえずC^7にしておく
-    g_chart.push(State("C^7",[],decided=False))
+
+    set_root(g_chart)
+    
+    #　とりあえずC^7だけでやりたい時
+    # g_chart.push(State("C^7",[],decided=False))
+
 
     #なんか入ってたら削除
     for f in glob.glob(PKL_DATA_PATH+'/*.pkl'):
