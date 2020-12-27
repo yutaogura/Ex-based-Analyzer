@@ -1,6 +1,8 @@
 """
 Created on Mon Sep 14 2020
 
+pyディレクトリの上から実行してください
+
 Incremental_chart_Parsing 
 
 CategoryとLexiconはこんな感じ
