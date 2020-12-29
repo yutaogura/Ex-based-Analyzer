@@ -37,7 +37,7 @@ const { spawnSync, spawn } = require("child_process");
 const util = require("util");
 const childProcess = require("child_process");
 const exec = util.promisify(childProcess.exec);
-const chordname_regexp = /^[ABCDEFG][b]*(|7|M7|m7|aug|aug7|hdim7|dim|dim7|sus|sus4)$/;
+const chordname_regexp = /^[ABCDEFG][b]*(|7|M7|m7|m|m6|aug|aug7|hdim7|dim|dim7|sus|sus4)$/;
 const fs = require("fs");
 
 export default {
