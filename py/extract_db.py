@@ -200,6 +200,7 @@ for rule in rule_counter:
 with open(FILE_TONIC_CHORD,'w') as f:
     for root in flats.values():
         for chord_type in tonic_chord_type:
+            chord_type = replace_badsymbol(chord_type)
             f.write(root + chord_type +"\n")
 
 with open(FILE_NAME_GRAMMAR,'w') as f:
