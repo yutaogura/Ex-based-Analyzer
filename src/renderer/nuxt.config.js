@@ -12,9 +12,11 @@ module.exports = {
   },
   loading: false,
   plugins: [
-    { ssr: true, src: '@/plugins/icons.js' },
-    { ssr: false, src: '@/plugins/swiper.js' }
+    { src: '@/plugins/icons.js' },
+    { src: '@/plugins/swiper.js', mode:'client' },
+    { src: '@/plugins/sidebar.js', mode:'client' }
   ],
+  css:['vue-sidebar-menu/dist/vue-sidebar-menu.css'],
   buildModules: [
 
   ],
