@@ -1,14 +1,16 @@
 <template>
-  <div
-    id="demo"
-    :class="[{'collapsed' : collapsed}, {'onmobile' : isOnMobile}]"
-  >
+  <div id="demo" :class="[{ collapsed: collapsed }, { onmobile: isOnMobile }]">
     <div class="demo">
       <div class="container">
         <h1>
           vue-sidebar-menu
           <a
-            style="color: #000;text-transform: uppercase;font-size: 14px;font-weight: 400;"
+            style="
+              color: #000;
+              text-transform: uppercase;
+              font-size: 14px;
+              font-weight: 400;
+            "
             href="https://github.com/yaminncco/vue-sidebar-menu"
           >
             Github
@@ -27,7 +29,7 @@
             </option>
           </select>
         </div>
-        <hr style="margin: 50px 0px;border: 1px solid #e3e3e3;">
+        <hr style="margin: 50px 0px; border: 1px solid #e3e3e3" />
         <router-view />
       </div>
       <sidebar-menu
@@ -49,173 +51,173 @@
 
 <script>
 const separator = {
-  template: `<hr style="border-color: rgba(0, 0, 0, 0.1); margin: 20px;">`
-}
+  template: `<hr style="border-color: rgba(0, 0, 0, 0.1); margin: 20px;">`,
+};
 
 export default {
-  name: 'App',
-  data () {
+  name: "App",
+  data() {
     return {
       menu: [
         {
           header: true,
-          title: 'Getting Started',
-          hiddenOnCollapse: true
+          title: "Getting Started",
+          hiddenOnCollapse: true,
         },
         {
-          href: '/',
-          title: 'Installation',
-          icon: 'fa fa-download'
+          href: "/",
+          title: "Installation",
+          icon: "fa fa-download",
         },
         {
-          href: '/basic-usage',
-          title: 'Basic Usage',
-          icon: 'fa fa-code'
-        },
-        {
-          header: true,
-          title: 'Usage',
-          hiddenOnCollapse: true
-        },
-        {
-          href: '/props',
-          title: 'Props',
-          icon: 'fa fa-cogs'
-        },
-        {
-          href: '/events',
-          title: 'Events',
-          icon: 'fa fa-bell'
-        },
-        {
-          href: '/styling',
-          title: 'Styling',
-          icon: 'fa fa-palette'
-        },
-        {
-          component: separator
+          href: "/basic-usage",
+          title: "Basic Usage",
+          icon: "fa fa-code",
         },
         {
           header: true,
-          title: 'Example',
-          hiddenOnCollapse: true
+          title: "Usage",
+          hiddenOnCollapse: true,
         },
         {
-          href: '/disabled',
-          title: 'Disabled page',
-          icon: 'fa fa-lock',
-          disabled: true
+          href: "/props",
+          title: "Props",
+          icon: "fa fa-cogs",
         },
         {
-          title: 'Badge',
-          icon: 'fa fa-cog',
+          href: "/events",
+          title: "Events",
+          icon: "fa fa-bell",
+        },
+        {
+          href: "/styling",
+          title: "Styling",
+          icon: "fa fa-palette",
+        },
+        {
+          component: separator,
+        },
+        {
+          header: true,
+          title: "Example",
+          hiddenOnCollapse: true,
+        },
+        {
+          href: "/disabled",
+          title: "Disabled page",
+          icon: "fa fa-lock",
+          disabled: true,
+        },
+        {
+          title: "Badge",
+          icon: "fa fa-cog",
           badge: {
-            text: 'new',
-            class: 'vsm--badge_default'
-          }
+            text: "new",
+            class: "vsm--badge_default",
+          },
         },
         {
-          href: '/page',
-          title: 'Dropdown Page',
-          icon: 'fa fa-list-ul',
+          href: "/page",
+          title: "Dropdown Page",
+          icon: "fa fa-list-ul",
           child: [
             {
-              href: '/page/sub-page-1',
-              title: 'Sub Page 01',
-              icon: 'fa fa-file-alt'
+              href: "/page/sub-page-1",
+              title: "Sub Page 01",
+              icon: "fa fa-file-alt",
             },
             {
-              href: '/page/sub-page-2',
-              title: 'Sub Page 02',
-              icon: 'fa fa-file-alt'
-            }
-          ]
+              href: "/page/sub-page-2",
+              title: "Sub Page 02",
+              icon: "fa fa-file-alt",
+            },
+          ],
         },
         {
-          title: 'Multiple Level',
-          icon: 'fa fa-list-alt',
+          title: "Multiple Level",
+          icon: "fa fa-list-alt",
           child: [
             {
-              title: 'page'
+              title: "page",
             },
             {
-              title: 'Level 2 ',
+              title: "Level 2 ",
               child: [
                 {
-                  title: 'page'
+                  title: "page",
                 },
                 {
-                  title: 'Page'
-                }
-              ]
+                  title: "Page",
+                },
+              ],
             },
             {
-              title: 'Page'
+              title: "Page",
             },
             {
-              title: 'Another Level 2',
+              title: "Another Level 2",
               child: [
                 {
-                  title: 'Level 3',
+                  title: "Level 3",
                   child: [
                     {
-                      title: 'Page'
+                      title: "Page",
                     },
                     {
-                      title: 'Page'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
+                      title: "Page",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
       ],
       collapsed: false,
       themes: [
         {
-          name: 'Default theme',
-          input: ''
+          name: "Default theme",
+          input: "",
         },
         {
-          name: 'White theme',
-          input: 'white-theme'
-        }
+          name: "White theme",
+          input: "white-theme",
+        },
       ],
-      selectedTheme: 'white-theme',
-      isOnMobile: false
-    }
+      selectedTheme: "white-theme",
+      isOnMobile: false,
+    };
   },
-  mounted () {
-    this.onResize()
-    window.addEventListener('resize', this.onResize)
+  mounted() {
+    this.onResize();
+    window.addEventListener("resize", this.onResize);
   },
   methods: {
-    onToggleCollapse (collapsed) {
-      console.log(collapsed)
-      this.collapsed = collapsed
+    onToggleCollapse(collapsed) {
+      console.log(collapsed);
+      this.collapsed = collapsed;
     },
-    onItemClick (event, item, node) {
-      console.log('onItemClick')
+    onItemClick(event, item, node) {
+      console.log("onItemClick");
       // console.log(event)
       // console.log(item)
       // console.log(node)
     },
-    onResize () {
+    onResize() {
       if (window.innerWidth <= 767) {
-        this.isOnMobile = true
-        this.collapsed = true
+        this.isOnMobile = true;
+        this.collapsed = true;
       } else {
-        this.isOnMobile = false
-        this.collapsed = false
+        this.isOnMobile = false;
+        this.collapsed = false;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600');
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600");
 
 body,
 html {
@@ -224,7 +226,7 @@ html {
 }
 
 body {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
   background-color: #f2f4f7;
   color: #262626;

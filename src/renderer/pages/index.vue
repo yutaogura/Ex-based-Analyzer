@@ -1,9 +1,31 @@
 <template>
   <v-app>
-    <no-ssr>
-      <div id="demo" :class="[{ collapsed: collapsed }]">
-        <div class="demo">
-          <sidebar-menu
+    <client-only>
+        <div class="main_content">
+          <!-- <v-icon x-large color="blue darken-2"> mdi-message-text </v-icon> -->
+          <v-text-field
+            label="chord sequence"
+            v-model="sequence_data"
+            v-on:keyup.enter="submitText"
+            outlined
+            clearable
+          >
+            <template v-slot:append-outer>
+              <v-btn color="primary" @click="submitText">Analyse</v-btn>
+            </template>
+          </v-text-field>
+          <div class="loader" v-show="show">Loading...</div>
+          <!-- v-forの引数でindexを指定 -->
+          <div v-for="(value, index) in sequence" :key="index">
+            <!-- メソッドにindexを渡す -->
+            <each-step
+              :ref="'childe' + index"
+              :sequence="sequence.slice(0, index + 1)"
+            />
+          </div>
+          <div></div>
+        </div>
+        <!-- <sidebar-menu
             class="sidebar"
             :menu="menu"
             :collapsed="collapsed"
@@ -19,34 +41,8 @@
             v-if="!collapsed"
             class="sidebar-overlay"
             @click="collapsed = true"
-          />
-          <div class="e-nuxt-container">
-            <!-- <v-icon x-large color="blue darken-2"> mdi-message-text </v-icon> -->
-            <v-text-field
-              label="chord sequence"
-              v-model="sequence_data"
-              v-on:keyup.enter="submitText"
-              outlined
-              clearable
-            >
-              <template v-slot:append-outer>
-                <v-btn color="primary" @click="submitText">Analyse</v-btn>
-              </template>
-            </v-text-field>
-            <div class="loader" v-show="show">Loading...</div>
-            <!-- v-forの引数でindexを指定 -->
-            <div v-for="(value, index) in sequence" :key="index">
-              <!-- メソッドにindexを渡す -->
-              <each-step
-                :ref="'childe' + index"
-                :sequence="sequence.slice(0, index + 1)"
-              />
-            </div>
-            <router-view />
-          </div>
-        </div>
-      </div>
-    </no-ssr>
+          /> -->
+    </client-only>
   </v-app>
 </template>
 
@@ -56,7 +52,6 @@ import SystemInformation from "@/components/SystemInformation.vue";
 import ImageCard from "@/components/ImageCard.vue";
 import EachStep from "@/components/EachStep.vue";
 import "@/assets/css/loading.css";
-import { mdiMidiPort } from "@mdi/js";
 
 const { spawnSync, spawn } = require("child_process");
 const util = require("util");
@@ -72,93 +67,6 @@ export default {
   },
   data() {
     return {
-      menu: [
-        {
-          header: true,
-          title: "Ex-based Chord Sequence Analyzer",
-          hiddenOnCollapse: true,
-        },
-        {
-          href: "/",
-          title: "Tree analysis",
-          icon: {
-            element: "font-awesome-icon",
-            attributes: {
-              // icon props:
-              icon: "tree",
-            },
-          },
-        },
-        {
-          //href: "/installtaion",
-          title: "Change Probability",
-          disabled: false,
-          icon: {
-            element: "font-awesome-icon",
-            attributes: {
-              // icon props:
-              icon: "sliders-h",
-            },
-          },
-        },
-        {
-          //href: "/installtion",
-          title: "Check Grammar",
-          disabled: true,
-          icon: {
-            element: "font-awesome-icon",
-            attributes: {
-              // icon props:
-              icon: "spell-check",
-            },
-          },
-        },
-        {
-          //href: "/",
-          title: "Settings",
-          disabled: true,
-          icon: {
-            element: "font-awesome-icon",
-            attributes: {
-              // icon props:
-              icon: "cogs",
-            },
-          },
-        },
-        {
-          header: true,
-          title: "Others",
-          hiddenOnCollapse: true,
-        },
-        {
-          //href: "/",
-          title: "Connect MIDI Keyboard",
-          disabled: false,
-          icon: {
-            element: "v-icon",
-            class: ["white--text"], 
-            text: mdiMidiPort,
-          },
-        },
-        // {
-        //   href: "/",
-        //   title: "Dropdown Page",
-        //   icon: "list-ul",
-        //   child: [
-        //     {
-        //       href: "/",
-        //       title: "Sub Page 01",
-        //       //icon: "fa fa-file-alt"
-        //     },
-        //     {
-        //       href: "/",
-        //       title: "Sub Page 02",
-        //       //icon: "fa fa-file-alt"
-        //     },
-        //   ],
-        // },
-      ],
-      collapsed: true,
       show: false,
       externalContent: "",
       sequence: [],
@@ -172,13 +80,6 @@ export default {
     },
   },
   methods: {
-    onItemClick(e, i) {
-      console.log("onItemClick");
-    },
-    onCollapse(c) {
-      console.log("onCollapse");
-      this.collapsed = c;
-    },
     checkCharacter(str) {
       if (str.match(chordname_regexp) == null) {
         return false;
@@ -251,48 +152,17 @@ html {
   padding: 0;
 }
 
-#demo {
-  padding-left: 350px;
-  transition: 0.3s ease;
-}
-#demo.collapsed {
-  padding-left: 50px;
-}
-/* .demo {
-  padding: 10px;
-} */
-.e-nuxt-container {
+.main_content {
   padding: 10px;
   min-height: calc(100vh);
   /* background: linear-gradient(to right, #ece9e6, #ffffff); */
-  background: #ece9e6;
   font-family: Helvetica, sans-serif;
+  background: #ece9e6;
   /* max-width: 900px; */
-}
-
-.sidebar-overlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background-color: #000;
-  opacity: 0.5;
-  z-index: 900;
 }
 
 .table {
   width: 100%;
   table-layout: fixed;
 }
-
-.v-icon__svg{
-  font-size: 40px;
-}
-
-.v-icon__svg{ 
-  width: 30px;
-  height:30px;
-  }
-
 </style>
