@@ -179,7 +179,7 @@ export default {
 
       var synth = new Tone.PolySynth().toDestination();
       function setplay(time, note) {
-        synth.triggerAttackRelease(note, "4n", time);
+        synth.triggerAttackRelease(note, "8n", time);
       }
       const melody = new Tone.Part(setplay, play_sequence);
       // melody.stop();
