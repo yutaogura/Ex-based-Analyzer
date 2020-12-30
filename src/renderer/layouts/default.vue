@@ -168,4 +168,8 @@ export default {
 .v-sidebar-menu .vsm--mobile-bg{
     background-color: #4285f4CC;
 }
+
+h1{
+  text-align: center;
+}
 </style>

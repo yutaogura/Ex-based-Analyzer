@@ -3,6 +3,7 @@
     <client-only>
         <div class="main_content">
           <!-- <v-icon x-large color="blue darken-2"> mdi-message-text </v-icon> -->
+          <h1>Incremental Tree Analysis</h1>
           <v-text-field
             label="chord sequence"
             v-model="sequence_data"
