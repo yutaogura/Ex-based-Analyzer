@@ -46,7 +46,7 @@ export default {
           },
         },
         {
-          href: "/installation",
+          href: "/change",
           title: "Change Probability",
           disabled: false,
           icon: {
@@ -58,9 +58,9 @@ export default {
           },
         },
         {
-          //href: "/installtion",
+          href: "/checkGrammar",
           title: "Check Grammar",
-          disabled: true,
+          disabled: false,
           icon: {
             element: "font-awesome-icon",
             attributes: {
