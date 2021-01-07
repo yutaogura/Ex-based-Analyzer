@@ -29,6 +29,10 @@
 <script>
 import ImageCard from "@/components/ImageCard.vue";
 import chord from "@/const.js"; //定数を別ファイルにやる方法
+
+const chordname_regexp = /^([ABCDEFG][b]*)(|7|M7|m7|m|m6|aug|aug7|hdim7|o|o7|sus|sus4)$/;
+const root_name = {'A' : 9,'B' : 11,'C' : 0,'D' : 2,'E' : 4,'F' : 5,'G' : 7,'A#' : 10,'B#' : 0,'C#' : 1,'D#' : 3,'E#' : 5,'F#' : 6,'G#' : 8,'Ab' : 8,'Bb' : 10,'Cb' : 11,'Db' : 1,'Eb' : 3,'Fb' : 4,'Gb' : 6};
+const type_name = {'M7': 0, 'm7' : 1, '7': 2, 'hdim7':3, 'o7':4};
 const Tone = require("tone");
 const { spawnSync, execSync } = require("child_process");
 
@@ -115,6 +119,19 @@ export default {
       this.cards.splice(0);
       this.count = 0;
     },
+    judge_root: function(symbol){
+      //TODO: 文字列からルートとコードタイプを抜き出して適切なroot_num,chord_type_numを割り当てる
+      var match = symbol.match(chordname_regexp);
+      var root_num = root_name[match[1]];
+      console.log("root_num",root_num);
+      return root_num;
+    },
+    judge_type: function(symbol){
+      var match = symbol.match(chordname_regexp);
+      var type_num = type_name[match[2]];
+      console.log("type_num",type_num);
+      return type_num;
+    },
     returnMidiSequence: function (sequence) {
       var play_sequence = [];
       var measure = 0;
@@ -122,9 +139,9 @@ export default {
       var tick = 0;
       for (var i = 0; i < sequence.length; i++) {
         console.log(sequence[i]);
-        //文字列からルートとコードタイプを抜き出して適切なroot_num,chord_type_numを割り当てる
-        var chord_root_num = 8;
-        var chord_type_num = 2;
+        
+        var chord_root_num = this.judge_root(sequence[i]);
+        var chord_type_num = this.judge_type(sequence[i]);
 
         var root_note_name3 = [
           "C3",
@@ -148,6 +165,7 @@ export default {
         var minMaj7_array = [0, 3, 7, 11];
         var aug7_array = [0, 4, 8, 11];
 
+        // TODO :　対応表作る
         var chord_type = [
           maj_array,
           min_array,

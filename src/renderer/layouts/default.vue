@@ -10,6 +10,7 @@
       class="sidebar"
       :menu="menu"
       :collapsed="collapsed"
+      :disable-hover="disableHover"
       @item-click="onItemClick"
       @toggle-collapse="onCollapse"
     >
@@ -116,6 +117,7 @@ export default {
       ],
       collapsed: true,
       show: false,
+      disableHover: true,
       externalContent: "",
       sequence: [],
       sequence_data: "",
