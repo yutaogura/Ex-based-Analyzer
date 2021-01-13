@@ -48,6 +48,8 @@ Grammar = []
 #どの深さまでlocal_chartを展開するか？
 Depth_Limit = 5
 
+REDUCTION_TREE = True
+SURVIVE_TREE_NUM = 100
 
 Sentense_tmp = 0
 
@@ -220,6 +222,24 @@ class Chart:
         self.chart.append(state)
         state.setId(self.number)
         self.number += 1
+
+    def reduce(self,survive_num):
+        whole = []
+        for s in self.chart:
+            x = {}
+            x['id'] = s.id
+            x['prob'] = s.prob 
+            whole.append(x) 
+        whole_sorted = sorted(whole,key=lambda x:x['prob'],reverse = True)
+        new_chart = []
+        for x in whole_sorted[:survive_num]:
+            for s in self.chart:
+                if x['id'] == s.id:
+                    new_chart.append(s)
+        
+        self.chart = new_chart
+
+        
 
     def print_chart(self):
         for s in self.chart:
@@ -415,10 +435,18 @@ def Chrat_Parsing(global_chart,w):
                 temp.push(t)
                 #print("----------------")
     global_chart = temp
+    print("global_len(pre reduction)",len(global_chart.get_chart()))
+
+    if REDUCTION_TREE:
+        print("===step4===")        
+        #step4 Chart Reduction
+        global_chart.reduce(SURVIVE_TREE_NUM)
+
+
     # print("Global")
     # st = "===Global===\n"
     # logging(st)
-    print("global_len ",len(global_chart.get_chart()))
+    print("global_len",len(global_chart.get_chart()))
     global_chart.print_max_prob()
     global_chart.print_min_prob()
     global_chart.save_probhist()
