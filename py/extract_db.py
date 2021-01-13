@@ -3,9 +3,13 @@ Created on Mon Sep 15 2020
 
 Jazz Harmony Treebank からlexicon.txt と　nonterminals.txtを作る
 
+
 デバッグしたいところにこれブチ込む
 import pdb; pdb.set_trace()
 
+pyディレクトリ中で
+python extract_db.py
+を実行 
 
 @author:yuta ogura
 """
@@ -39,7 +43,7 @@ note_norm = {'A' : 9,'B' : 11,'C' : 0,'D' : 2,'E' : 4,'F' : 5,'G' : 7,'A#' : 10,
 flats = {0 : 'C', 1 : 'Db', 2 : 'D', 3 : 'Eb', 4 : 'E',5 : 'F',6 : 'Gb',7 : 'G',8 : 'Ab',9 : 'A',10: 'Bb',11: 'B'}
 sharps = {0 : 'C',1 : 'C#',2 : 'D',3 : 'D#',4 : 'E',5 : 'F',6 : 'F#',7 : 'G',8 : 'G#',9 : 'A',10: 'A#',11: 'B'}
 
-tonic_chord_type =['^7','^','6','m7','m','m6']
+tonic_chord_type =['^7','^','m7','m']
 
 
 # Tree utility functions
@@ -184,6 +188,7 @@ rule_counter = collections.Counter(rules)
 rule_counter = sorted(rule_counter.items(),key=lambda x:x[0])
 # print(rule_counter)
 
+# 確率パラメータ推定
 for rule in rule_counter:
     #該当ルールをpickup
     target_rule_count = rule[1]
@@ -197,12 +202,15 @@ for rule in rule_counter:
     rule_with_prob[rule[0]] = target_rule_count / same_parent_rule_counter
 
 #print(rule_with_prob)
+
+# tonic生成ルール
 with open(FILE_TONIC_CHORD,'w') as f:
     for root in flats.values():
         for chord_type in tonic_chord_type:
             chord_type = replace_badsymbol(chord_type)
             f.write(root + chord_type +"\n")
 
+# 文法作成
 with open(FILE_NAME_GRAMMAR,'w') as f:
     for i in rule_with_prob:
         #print(i)

@@ -22,6 +22,9 @@ import pandas as pd
 import shutil
 import os
 import glob
+import numpy as np
+import matplotlib.pyplot as plt
+
 
 #ログファイル
 FILE_NAME = "./py/chart2.log"
@@ -44,6 +47,9 @@ Lexicon = {}
 Grammar = []
 #どの深さまでlocal_chartを展開するか？
 Depth_Limit = 5
+
+
+Sentense_tmp = 0
 
 
 
@@ -232,6 +238,31 @@ class Chart:
             else:
                 pass
 
+    def print_max_prob(self):
+        max_prob = 0
+        for s in self.chart:
+            if s.prob > max_prob :
+                max_prob = s.prob
+        print("max prob:",max_prob)
+                
+    def print_min_prob(self):
+        min_prob = 1
+        for s in self.chart:
+            if s.prob < min_prob :
+                min_prob = s.prob
+        print("min prob:",min_prob)
+
+    def save_probhist(self):
+        global Sentense_tmp
+        fig = plt.figure()
+        x = []
+        for s in self.chart:
+            x.append(s.prob)
+        xd = sorted(x,reverse = True) 
+        plt.hist(xd[:20], bins=50)
+        fig.savefig("./py/hist/time"+str(Sentense_tmp)+".png") # この行を追記  
+        Sentense_tmp = Sentense_tmp + 1  
+
     def get_chart(self):
         return self.chart
 
@@ -313,7 +344,7 @@ def Chrat_Parsing(global_chart,w):
     for cat in Category:  
         if cat in Lexicon[w]:
             local_chart.push(State(cat,[State(w,[])],1.0))
-    # print("===step1===")
+    print("===step1===")
     # print("Local")
     st = "===step1===\n===Local===\n"
     #logging(st)
@@ -355,16 +386,14 @@ def Chrat_Parsing(global_chart,w):
                         # print("grammar-->",g.print_rule())
                         #TODO:g.probがNoneの時の処理    
                         local_chart.push(State(g.left,subseq,a.prob*g.prob))
-    # print("===step2===")
+    print("===step2===")
     # print("Local")
     st = "===step2===\n===Local===\n"
     #logging(st)
     #local_chart.print_chart()    
 
-    # print("===step3===")        
+    print("===step3===")        
     #step3 Replacing Terms
-    # print("global_len ",len(global_chart.get_chart()))
-    # print("local_len",len(local_chart.get_chart()))
 
     for g in global_chart.get_chart():
         for l in local_chart.get_chart():
@@ -387,8 +416,13 @@ def Chrat_Parsing(global_chart,w):
                 #print("----------------")
     global_chart = temp
     # print("Global")
-    st = "===Global===\n"
+    # st = "===Global===\n"
     # logging(st)
+    print("global_len ",len(global_chart.get_chart()))
+    global_chart.print_max_prob()
+    global_chart.print_min_prob()
+    global_chart.save_probhist()
+    # print("local_len",len(local_chart.get_chart()))
     # global_chart.print_chart()
 
 

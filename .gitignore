@@ -8,3 +8,4 @@ py/svg/*
 py/temp/*
 py/chart2.log
 py/target.txt
+py/hist/*
