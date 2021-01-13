@@ -259,7 +259,7 @@ class Chart:
         for s in self.chart:
             x.append(s.prob)
         xd = sorted(x,reverse = True) 
-        plt.hist(xd[:20], bins=50)
+        plt.hist(xd[:100], bins=50) #上位100だけhistogramに追加
         fig.savefig("./py/hist/time"+str(Sentense_tmp)+".png") # この行を追記  
         Sentense_tmp = Sentense_tmp + 1  
 
