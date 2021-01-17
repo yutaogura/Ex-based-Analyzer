@@ -60,6 +60,7 @@ const childProcess = require("child_process");
 const exec = util.promisify(childProcess.exec);
 const chordname_regexp = /^[ABCDEFG][b]*(|7|M7|m7|m|m6|aug|aug7|hdim7|o|o7|sus|sus4)$/;
 const fs = require("fs");
+const TARGET_FILE = "py/target.txt";
 
 export default {
   components: {
@@ -74,6 +75,17 @@ export default {
       sequence_data: "",
       loading: false,
     };
+  },
+  created() {
+    console.log('----- created -----')
+    try {
+        let target = fs.readFileSync(TARGET_FILE,'utf-8');
+        console.log(target);
+        this.sequence_data = target;
+        this.sequence = target.split(" ");
+      } catch (e) {
+        console.log(e);
+      }
   },
   computed: {
     swiper() {
@@ -121,7 +133,7 @@ export default {
 
       //target.txtへの書き込み
       try {
-        fs.writeFileSync("py/target.txt", this.sequence_data);
+        fs.writeFileSync(TARGET_FILE, this.sequence_data);
         console.log("target.txt is writed");
       } catch (e) {
         console.log(e);
