@@ -55,6 +55,30 @@ Dm7 G7 (CM7 EbM7 AM7 DbM7)
 ```
 JHTは()部分がCM7で簡略化
 
+
+### Red Clay
+```
+Cm7 Bbm7 Dbsus Ebsus Fsus Gsus Cm7 Bbm7 Eb7 AbM7 Dhdim7 G7 Cm7
+```
+
+### Afternoon in Paris
+```
+CM7 Cm7 F7 BbM7 Bbm7 Eb7 AbM7 Dm7 G7 CM7
+```
+
+### There will never be another you
+```
+EbM7 EbM7 Dhdim7 G7 Cm7 F7 Bbm7 Eb7 AbM7 
+```
+
+### All the things you are 
+
+### Autumn leaves コレ！
+```
+Cm7 F7 BbM7 EbM7 Ahdim7 D7 Gm7 Cm7
+```
+
+
 #### メモ
 
 ## 考察

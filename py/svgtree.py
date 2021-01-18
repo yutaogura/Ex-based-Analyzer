@@ -12,7 +12,8 @@ import glob
 import shutil
 # read pkl data
 
-DRAWING_THRESHOLD=10
+# 各ステップごとにいくつ木を描くか？
+DRAWING_THRESHOLD=50 
 PKL_DATA_PATH = "./py/temp/"
 SVG_DATA_PATH = "./py/svg/"
 def main():
