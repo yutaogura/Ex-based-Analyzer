@@ -43,7 +43,7 @@ def main():
         for idx,tree in enumerate(trees):
             if idx < DRAWING_THRESHOLD:
                 data = tree['tree'] 
-                svg_image = svgling.draw_tree(data)
+                svg_image = svgling.draw_tree(data,leaf_nodes_align=True)
                 # id あり
                 # svg_image.get_svg().saveas(svg_save_dir+"/"+ "rank_" + str(idx) +"id_"+str(tree['id'])+"prob_"+str(tree['prob'])+".svg",pretty=True)
                 # id なし

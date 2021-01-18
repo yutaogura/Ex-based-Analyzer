@@ -4,7 +4,7 @@
 
 ###  文法規則
 - Chord Quallity
-  - {C,Db,...,B} × {M7, M, m7, m, 7, m6, aug, aug7, hdim7, o, o7, sus, sus4} = **156パターン**
+  - {C,Db,...,B} × {M7, M, m7, m, 7, m6, aug, aug7, hdim7, o, o7, sus, sus4} = **156パターン 実際は92かも**
   - テンションなどはなし
 - Total grammar number：**584** <!-- TODO　この数本当に合ってる？　確認して3.3章の修正 -->
   - 調性(C Major keyへの)による正規化なし
