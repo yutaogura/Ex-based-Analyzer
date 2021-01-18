@@ -71,9 +71,9 @@ export default {
           },
         },
         {
-          //href: "/",
+          href: "/settings",
           title: "Settings",
-          disabled: true,
+          disabled: false,
           icon: {
             element: "font-awesome-icon",
             attributes: {
