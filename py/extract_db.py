@@ -36,6 +36,8 @@ FILE_NAME_TREEBANK = './treebank/treebank.json'
 FILE_NAME_NONTERMINAL = "./nonterminals.txt"
 FILE_NAME_LEXICON = "./lexicon.txt"
 FILE_NAME_GRAMMAR = "./pcfg.txt"
+FILE_NAME_PrlGrammar = "./pcfg_prl.txt"
+FILE_NAME_PrepGrammar = "./pcfg_prep.txt"
 FILE_TONIC_CHORD = "./tonic.txt"
 
 # Key and chord utility functions
@@ -212,6 +214,12 @@ with open(FILE_TONIC_CHORD,'w') as f:
 
 # 文法作成
 with open(FILE_NAME_GRAMMAR,'w') as f:
-    for i in rule_with_prob:
-        #print(i)
-        f.write(i[0]+ " -> "+ i[1][0] +" "+ i[1][1] + " [" + str (rule_with_prob[i]) +"]" + "\n")
+    with open(FILE_NAME_PrlGrammar,'w') as fprl:
+        with open(FILE_NAME_PrepGrammar,'w') as fprep:
+            for i in rule_with_prob:
+                #print(i)
+                f.write(i[0]+ " -> "+ i[1][0] +" "+ i[1][1] + " [" + str (rule_with_prob[i]) +"]" + "\n")
+                if(i[1][0] == i[1][1]):
+                    fprl.write(i[0]+ " -> "+ i[1][0] +" "+ i[1][1] + " [" + str (rule_with_prob[i]) +"]" + "\n")
+                else:
+                    fprep.write(i[0]+ " -> "+ i[1][0] +" "+ i[1][1] + " [" + str (rule_with_prob[i]) +"]" + "\n")
