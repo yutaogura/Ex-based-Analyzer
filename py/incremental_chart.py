@@ -24,6 +24,8 @@ import os
 import glob
 import numpy as np
 import matplotlib.pyplot as plt
+import collections
+import datetime
 
 
 #ログファイル
@@ -52,7 +54,7 @@ REDUCTION_TREE = True
 SURVIVE_TREE_NUM = 100
 
 Sentense_tmp = 0
-
+root_count_by_step = []
 
 
 """
@@ -281,7 +283,14 @@ class Chart:
         xd = sorted(x,reverse = True) 
         plt.hist(xd[:100], bins=50) #上位100だけhistogramに追加
         fig.savefig("./py/hist/time"+str(Sentense_tmp)+".png") # この行を追記  
-        Sentense_tmp = Sentense_tmp + 1  
+        Sentense_tmp = Sentense_tmp + 1
+
+    def count_root(self):
+        global root_count_by_step
+        
+        categories = [(c.category) for c in self.chart]
+        cs = collections.Counter(categories)
+        root_count_by_step.append(cs)
 
     def get_chart(self):
         return self.chart
@@ -450,6 +459,7 @@ def Chrat_Parsing(global_chart,w):
     global_chart.print_max_prob()
     global_chart.print_min_prob()
     global_chart.save_probhist()
+    global_chart.count_root()
     # print("local_len",len(local_chart.get_chart()))
     # global_chart.print_chart()
 
@@ -481,6 +491,51 @@ def set_root(g_chart):
     for tonic in tonics:
         g_chart.push(State(tonic,[],decided=False))           
 
+
+def plot_linegraph():
+    global root_count_by_step
+
+    # genreの確定
+    genes = {}
+    for key in root_count_by_step[0].keys():
+        genes[key] = []
+    # genereに追加    
+
+    # 最高頻度を記録
+    max_count_value = 0
+
+    for step in root_count_by_step:
+        for key in step.keys():
+            if key in genes.keys():
+                if max_count_value < step[key]:
+                    max_count_value = step[key]
+                genes[key].append(step[key])
+
+    genes_sorted = sorted(genes.items(), key=lambda x:len(x[1]), reverse=True)
+    print(genes_sorted)
+
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    fig.subplots_adjust(right=0.7)
+
+    gene_limit = 6
+    limit = 0
+    for k,v in genes_sorted:
+        ax.plot(v, label=k)
+        limit = limit + 1
+        if limit == gene_limit:
+            break
+
+
+    ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, fontsize=18)
+    ax.set_xlabel("chord step")
+    ax.set_ylabel("root count")
+    ax.set_ylim(0, max_count_value) #ここのmaxを系列のmaxに
+
+    now = datetime.datetime.now()
+    fig.savefig("./py/linegraph/root.png")
+    # fig.savefig("./py/linegraph/"+ now.strftime('%Y%m%d_%H%M%S') +".png")
 
 def main():
     g_chart = Chart()
@@ -530,6 +585,8 @@ def main():
 
     except ParseError as e:
         print(e)
+
+    plot_linegraph() 
 
 if __name__ == "__main__":
     main()
