@@ -55,6 +55,9 @@ Dm7 G7 (CM7 EbM7 AM7 DbM7)
 ```
 JHTは()部分がCM7で簡略化
 
+<!-- <img src="***画像URL***" width="***サイズ***"> -->
+#### コード・アナライズ
+![](./fig/lady.jpeg)
 
 ### Red Clay
 ```

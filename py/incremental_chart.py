@@ -534,7 +534,7 @@ def plot_linegraph():
     ax.set_ylim(0, max_count_value) #ここのmaxを系列のmaxに
 
     now = datetime.datetime.now()
-    fig.savefig("./py/linegraph/root.png")
+    fig.savefig("./py/linegraph/root.pdf")
     # fig.savefig("./py/linegraph/"+ now.strftime('%Y%m%d_%H%M%S') +".png")
 
 def main():
