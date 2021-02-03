@@ -7,10 +7,13 @@ This is electron-nuxt project
 ## Usage
 In order to use this application, follow the following steps:
 
-conming soon!
+TODO
 
 ## Installation
+TODO
 
+## Dependencies
+TODO
 
 #### Build Setup
 
