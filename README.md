@@ -1,10 +1,16 @@
-# Expectation-based Chord Sequence Analyzer
+# Expectation-based Chord Sequence Analyzer(ECSA)
 コード進行を漸進的に解析，構文木を表示するシステム
 (システム本体)
 
+This is electron-nuxt project
 
+## Usage
+In order to use this application, follow the following steps:
 
-> An electron-nuxt project
+conming soon!
+
+## Installation
+
 
 #### Build Setup
 
