@@ -1,4 +1,4 @@
-# Expectation-based Jazz Chord Sequene Analyzer
+# Expectation-based Chord Sequence Analyzer
 コード進行を漸進的に解析，構文木を表示するシステム
 (システム本体)
 
@@ -27,8 +27,6 @@ yarn run build
 - キャッシュ削除
   ``` git rm --cached hogehoge.txt ```
 
-###
-- 正規表現チェッカーを使ってか確認する
 ---
 
 This project was generated with [electron-nuxt](https://github.com/michalzaq12/electron-nuxt) v1.6.0 using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://github.com/michalzaq12/electron-nuxt/blob/master/README.md).
