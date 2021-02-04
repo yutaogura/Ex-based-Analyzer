@@ -157,7 +157,7 @@ export default {
       var rank = this.count;
       this.count  = this.count + 1;
       var identification = this.sequence.join() + rank;
-      console.log(identification)
+      // console.log(identification)
       this.cards.push({
         rank: rank,
         prob: this.prob_data[rank][1],
