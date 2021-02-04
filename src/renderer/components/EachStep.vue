@@ -12,6 +12,7 @@
     <v-btn icon color="green" @click="playSound"
       ><v-icon>mdi-volume-high</v-icon></v-btn
     >
+    U = 
     <swiper ref="mySwiper" :options="swiperOption">
       <img-item
         v-for="card in cards"
