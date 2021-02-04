@@ -36,8 +36,8 @@ FILE_NAME = "./py/chart2.log"
 #LOG_FORMAT = 0  #readable format
 #LOG_FORMAT = 1 #tex format
 LOG_FORMAT = 2  #cairosvg format
-PKL_DATA_PATH = "./py/temp/"
-MAP_STEP_CSV = "./py/temp/map_step.csv"
+TEMP_DIR_PATH = "./py/temp/"
+
 
 #Analysis target 
 ANALYSIS_TARGET_FILE = "./py/target.txt"
@@ -480,16 +480,19 @@ def save_gchart(g_chart,parsed_chord="",step_num=0):
         trees.append({"id":state.id,"prob":state.prob,"tree":tree})
     sorted_trees = sorted(trees, key=lambda x:x['prob'], reverse=True)
     # print(sorted_trees[:5])
+
     # prob.csvを保存
-    with open(PKL_DATA_PATH+'{0:02d}'.format(step_num)+'prob.csv','w') as f:
+    with open(TEMP_DIR_PATH+'{0:02d}'.format(step_num)+'prob.csv','w') as f:
         writer = csv.writer(f)
-        writer.writerow([0, 1, 2])
+        for rank,tree in enumerate(sorted_trees):
+            writer.writerow(['{0:03d}'.format(rank),tree['prob']])
 
     
     #pklで保存
-    # HACK:消す    
-    pd.to_pickle(sorted_trees,PKL_DATA_PATH+parsed_chord+".pkl")
-    pd.to_pickle(sorted_trees,PKL_DATA_PATH+'{0:02d}'.format(step_num)+".pkl")
+    # HACK:↓消す    
+    # pd.to_pickle(sorted_trees,TEMP_DIR_PATH+parsed_chord+".pkl")
+    # HACK:↑消す
+    pd.to_pickle(sorted_trees,TEMP_DIR_PATH+'{0:02d}'.format(step_num)+".pkl")
 
 
 def set_root(g_chart):
@@ -557,7 +560,7 @@ def main():
 
 
     #なんか入ってたら削除
-    for f in glob.glob(PKL_DATA_PATH+'/*.pkl'):
+    for f in glob.glob(TEMP_DIR_PATH+'/*.pkl'):
         os.remove(f)
 
     with open(ANALYSIS_TARGET_FILE,"r") as f:
@@ -583,12 +586,19 @@ def main():
     # for g in Grammar:
     #      print(g.print_rule())
 
+
+    #temp(作業)ディレクトリの中を空っぽに(作り直す)
+    files = os.listdir(TEMP_DIR_PATH)
+    if files: #なんか入ってたら
+        shutil.rmtree(TEMP_DIR_PATH) #消して
+        os.mkdir(TEMP_DIR_PATH) #作る
+
     # ステップ対応表作成
     step_list = []
     for idx, chord_symbol in enumerate(words):
         map_tuple = ['{0:02d}'.format(idx),chord_symbol]
         step_list.append(map_tuple)
-    with open(MAP_STEP_CSV,'w') as f:
+    with open(TEMP_DIR_PATH+"map_step.csv",'w') as f:
         writer = csv.writer(f)
         writer.writerows(step_list)
 

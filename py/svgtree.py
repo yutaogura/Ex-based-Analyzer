@@ -14,7 +14,7 @@ import shutil
 
 # 各ステップごとにいくつ木を描くか？
 DRAWING_THRESHOLD=50 
-PKL_DATA_PATH = "./py/temp/"
+PKL_DATA_PATH = "./py/temp/*.pkl"
 SVG_DATA_PATH = "./py/svg/"
 def main():
 
@@ -25,20 +25,19 @@ def main():
         os.mkdir(SVG_DATA_PATH) #作る
 
     #tempフォルダ内のファイルを読み込む
-    files = os.listdir(PKL_DATA_PATH)
+    files = glob.glob(PKL_DATA_PATH)
     print(files)
 
     for step_idx, pkl_file_name in enumerate(files):
 
         #svgファイルの保存場所確保
-        parsed_chord = pkl_file_name.replace(".pkl","")
-        # print(parsed_chord)
-        svg_save_dir = SVG_DATA_PATH+parsed_chord   
+        step_num = os.path.splitext(os.path.basename(pkl_file_name))[0]
+        svg_save_dir = SVG_DATA_PATH+step_num   
         if not os.path.exists(svg_save_dir):
             os.makedirs(svg_save_dir)
 
         #pkl展開->tree書き出し
-        trees = pd.read_pickle(PKL_DATA_PATH + pkl_file_name)
+        trees = pd.read_pickle(pkl_file_name)
         # print(trees)
 
         for idx,tree in enumerate(trees):
@@ -48,7 +47,7 @@ def main():
                 # id あり
                 # svg_image.get_svg().saveas(svg_save_dir+"/"+ "rank_" + str(idx) +"id_"+str(tree['id'])+"prob_"+str(tree['prob'])+".svg",pretty=True)
                 # id なし
-                svg_image.get_svg().saveas(svg_save_dir+"/"+"step_" + '{0:03d}'.format(step_idx) + "rank_" + '{0:03d}'.format(idx) +"prob_"+str(tree['prob'])+".svg",pretty=True)
+                svg_image.get_svg().saveas(svg_save_dir+"/" + '{0:03d}'.format(idx) + ".svg",pretty=True)
 
 
 if __name__ == "__main__":
