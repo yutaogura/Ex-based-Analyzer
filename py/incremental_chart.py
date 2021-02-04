@@ -26,6 +26,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import collections
 import datetime
+import csv
 
 
 #ログファイル
@@ -36,6 +37,7 @@ FILE_NAME = "./py/chart2.log"
 #LOG_FORMAT = 1 #tex format
 LOG_FORMAT = 2  #cairosvg format
 PKL_DATA_PATH = "./py/temp/"
+MAP_STEP_CSV = "./py/temp/map_step.csv"
 
 #Analysis target 
 ANALYSIS_TARGET_FILE = "./py/target.txt"
@@ -471,7 +473,7 @@ class ParseError(Exception):
     pass
 
 
-def save_gchart(g_chart,parsed_chord=""):
+def save_gchart(g_chart,parsed_chord="",step_num=0):
     trees = []
     for state in g_chart.get_chart():
         tree = state.return_state_list()
@@ -479,8 +481,10 @@ def save_gchart(g_chart,parsed_chord=""):
     
     sorted_trees = sorted(trees, key=lambda x:x['prob'], reverse=True)
     # print(sorted_trees[:10])
-    #pklで保存    
+    #pklで保存
+    # HACK:消す    
     pd.to_pickle(sorted_trees,PKL_DATA_PATH+parsed_chord+".pkl")
+    pd.to_pickle(sorted_trees,PKL_DATA_PATH+'{0:02d}'.format(step_num)+".pkl")
 
 
 def set_root(g_chart):
@@ -574,14 +578,24 @@ def main():
     # for g in Grammar:
     #      print(g.print_rule())
 
-    #解析本体
+    # ステップ対応表作成
+    step_list = []
+    for idx, chord_symbol in enumerate(words):
+        map_tuple = ['{0:02d}'.format(idx),chord_symbol]
+        step_list.append(map_tuple)
+    with open(MAP_STEP_CSV,'w') as f:
+        writer = csv.writer(f)
+        writer.writerows(step_list)
 
+
+
+    #解析本体
     try:
         for idx,w in enumerate(words):
             if g_chart is None:
                 raise ParseError("Error! : Global Chart is empty")
             g_chart = Chrat_Parsing(g_chart,w)
-            save_gchart(g_chart,"".join(words[:idx+1]))    
+            save_gchart(g_chart,"".join(words[:idx+1]),idx)    
 
     except ParseError as e:
         print(e)
