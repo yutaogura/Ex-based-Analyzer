@@ -478,9 +478,14 @@ def save_gchart(g_chart,parsed_chord="",step_num=0):
     for state in g_chart.get_chart():
         tree = state.return_state_list()
         trees.append({"id":state.id,"prob":state.prob,"tree":tree})
-    
     sorted_trees = sorted(trees, key=lambda x:x['prob'], reverse=True)
-    # print(sorted_trees[:10])
+    # print(sorted_trees[:5])
+    # prob.csvを保存
+    with open(PKL_DATA_PATH+'{0:02d}'.format(step_num)+'prob.csv','w') as f:
+        writer = csv.writer(f)
+        writer.writerow([0, 1, 2])
+
+    
     #pklで保存
     # HACK:消す    
     pd.to_pickle(sorted_trees,PKL_DATA_PATH+parsed_chord+".pkl")
