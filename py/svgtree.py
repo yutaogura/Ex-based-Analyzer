@@ -48,7 +48,7 @@ def main():
                 # id あり
                 # svg_image.get_svg().saveas(svg_save_dir+"/"+ "rank_" + str(idx) +"id_"+str(tree['id'])+"prob_"+str(tree['prob'])+".svg",pretty=True)
                 # id なし
-                svg_image.get_svg().saveas(svg_save_dir+"/"+ "rank_" + str(idx) +"prob_"+str(tree['prob'])+".svg",pretty=True)
+                svg_image.get_svg().saveas(svg_save_dir+"/"+ "rank_" + '{0:03d}'.format(idx) +"prob_"+str(tree['prob'])+".svg",pretty=True)
 
 
 if __name__ == "__main__":
