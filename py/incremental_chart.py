@@ -489,9 +489,6 @@ def save_gchart(g_chart,parsed_chord="",step_num=0):
 
     
     #pklで保存
-    # HACK:↓消す    
-    # pd.to_pickle(sorted_trees,TEMP_DIR_PATH+parsed_chord+".pkl")
-    # HACK:↑消す
     pd.to_pickle(sorted_trees,TEMP_DIR_PATH+'{0:02d}'.format(step_num)+".pkl")
 
 
