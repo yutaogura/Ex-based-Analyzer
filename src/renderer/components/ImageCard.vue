@@ -5,7 +5,7 @@
     <v-col>   
     <v-card>
       <!-- <v-card-text>tree {{ num }} {{src}} prob:NaN </v-card-text> -->
-      <v-card-text>{{ rank }} : {{ prob }}</v-card-text>
+      <v-card-text>({{ rank }}) {{ prob }}</v-card-text>
       <!-- <SVGElement name='/assets/temp.svg' /> -->
       <img
         :src="svg_path"

@@ -57,7 +57,8 @@ SURVIVE_TREE_NUM = 100
 
 Sentense_tmp = 0
 root_count_by_step = []
-
+step_u_list = []
+pre_max_prob = 1
 
 """
 Rule class 
@@ -296,6 +297,7 @@ class Chart:
 
     def get_chart(self):
         return self.chart
+    
 
 
 """
@@ -474,6 +476,7 @@ class ParseError(Exception):
 
 
 def save_gchart(g_chart,parsed_chord="",step_num=0):
+    global step_u_list, pre_max_prob
     trees = []
     for state in g_chart.get_chart():
         tree = state.return_state_list()
@@ -481,12 +484,20 @@ def save_gchart(g_chart,parsed_chord="",step_num=0):
     sorted_trees = sorted(trees, key=lambda x:x['prob'], reverse=True)
     # print(sorted_trees[:5])
 
+    #Uの計算
+    if(step_num==0):
+        step_u_list.append(sorted_trees[0]['prob'])
+    else:
+        # print("U =",sorted_trees[0]['prob'],"/",pre_max_prob)
+        result = sorted_trees[0]['prob'] / pre_max_prob
+        step_u_list.append(result)
+    pre_max_prob = sorted_trees[0]['prob']
+
     # prob.csvを保存
     with open(TEMP_DIR_PATH+'{0:02d}'.format(step_num)+'prob.csv','w') as f:
         writer = csv.writer(f)
         for rank,tree in enumerate(sorted_trees):
             writer.writerow(['{0:03d}'.format(rank),tree['prob']])
-
     
     #pklで保存
     pd.to_pickle(sorted_trees,TEMP_DIR_PATH+'{0:02d}'.format(step_num)+".pkl")
@@ -590,16 +601,6 @@ def main():
         shutil.rmtree(TEMP_DIR_PATH) #消して
         os.mkdir(TEMP_DIR_PATH) #作る
 
-    # ステップ対応表作成
-    step_list = []
-    for idx, chord_symbol in enumerate(words):
-        map_tuple = ['{0:02d}'.format(idx),chord_symbol]
-        step_list.append(map_tuple)
-    with open(TEMP_DIR_PATH+"map_step.csv",'w') as f:
-        writer = csv.writer(f)
-        writer.writerows(step_list)
-
-
 
     #解析本体
     try:
@@ -611,6 +612,16 @@ def main():
 
     except ParseError as e:
         print(e)
+
+    global step_u_list
+    # ステップ対応表作成
+    step_list = []
+    for idx, chord_symbol in enumerate(words):
+        map_info = ['{0:02d}'.format(idx),chord_symbol,step_u_list[idx]]
+        step_list.append(map_info)
+    with open(TEMP_DIR_PATH+"map_step.csv",'w') as f:
+        writer = csv.writer(f)
+        writer.writerows(step_list)
 
     plot_linegraph() 
 

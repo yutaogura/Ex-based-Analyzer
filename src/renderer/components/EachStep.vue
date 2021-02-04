@@ -12,7 +12,7 @@
     <v-btn icon color="green" @click="playSound"
       ><v-icon>mdi-volume-high</v-icon></v-btn
     >
-    U = 
+    U = {{step_u_value}}
     <swiper ref="mySwiper" :options="swiperOption">
       <img-item
         v-for="card in cards"
@@ -99,6 +99,17 @@ export default {
       var step_num = this.sequence.length - 1;
       var dd = ("00" + step_num).slice(-2);
       return dd
+    },
+    step_u_value : function(){
+      var u_data = []
+      try {
+        let target = fs.readFileSync("./"+TempDir+"map_step.csv",'utf-8');
+        u_data = parse_csv(target)
+        //console.log(u_data);
+      } catch (e) {
+        console.log(e);
+      }
+      return u_data[this.sequence.length - 1][2]
     },
     prob_data : function(){
       var data = []
