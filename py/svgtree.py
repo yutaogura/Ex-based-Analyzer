@@ -26,9 +26,9 @@ def main():
 
     #tempフォルダ内のファイルを読み込む
     files = os.listdir(PKL_DATA_PATH)
-    # print(files)
+    print(files)
 
-    for pkl_file_name in files:
+    for step_idx, pkl_file_name in enumerate(files):
 
         #svgファイルの保存場所確保
         parsed_chord = pkl_file_name.replace(".pkl","")
@@ -48,7 +48,7 @@ def main():
                 # id あり
                 # svg_image.get_svg().saveas(svg_save_dir+"/"+ "rank_" + str(idx) +"id_"+str(tree['id'])+"prob_"+str(tree['prob'])+".svg",pretty=True)
                 # id なし
-                svg_image.get_svg().saveas(svg_save_dir+"/"+ "rank_" + '{0:03d}'.format(idx) +"prob_"+str(tree['prob'])+".svg",pretty=True)
+                svg_image.get_svg().saveas(svg_save_dir+"/"+"step_" + '{0:03d}'.format(step_idx) + "rank_" + '{0:03d}'.format(idx) +"prob_"+str(tree['prob'])+".svg",pretty=True)
 
 
 if __name__ == "__main__":
