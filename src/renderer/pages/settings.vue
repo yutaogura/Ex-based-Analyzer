@@ -1,7 +1,7 @@
 <template>
   <div class="main_content">
     <h1>Settings</h1>
-    <p>各種設定をするよ</p>
+    <p>set User Settings (under construction)</p>
     <v-divider></v-divider>
     <br>
     <v-text-field value="py/svg/" label="svg dir path" ></v-text-field>

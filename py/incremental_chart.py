@@ -555,7 +555,7 @@ def plot_linegraph():
 
     now = datetime.datetime.now()
     fig.savefig("./py/linegraph/root.pdf")
-    # fig.savefig("./py/linegraph/"+ now.strftime('%Y%m%d_%H%M%S') +".png")
+    fig.savefig("./py/linegraph/root.png")
 
 def main():
     g_chart = Chart()
