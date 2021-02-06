@@ -1,5 +1,7 @@
 # Expectation-based Chord Sequence Analyzer(ECSA)
 コード進行を漸進的に解して，楽曲途中の和声構造を表示するシステム
+
+
 Visualize a harmonic structure in the middle of the song with incremental parsing
 
 ### Screen Shot
@@ -27,7 +29,7 @@ TODO
 
 ## CUI Usage
 
-#### Build Setup
+## Build Setup
 
 ``` bash
 # install dependencies
