@@ -1,7 +1,8 @@
 # Expectation-based Chord Sequence Analyzer(ECSA)
-コード進行を漸進的に解析，構文木を表示するシステム
+コード進行を漸進的に解して，楽曲途中の和声構造を表示するシステム
+Visualize a harmonic structure in the middle of the song with incremental parsing
 
-system screenshot
+### Screen Shot
 <img src="./screenshot.png" >
 
 
@@ -24,6 +25,7 @@ TODO
 ## Dependencies
 - python3.x
 
+## CUI Usage
 
 #### Build Setup
 
@@ -38,9 +40,18 @@ yarn run dev
 yarn run build
 ```
 
-## CUI Usage
+## Licence
 
-## Tips
+[MIT](https://github.com/tcnksm/tool/blob/master/LICENCE)
+
+## Reference
+[[1]](https://smc2020torino.it/adminupload/file/SMCCIM_2020_paper_111.pdf) Yuta Ogura, Hidefumi Ohmura, Yui Uehara, Hidefumi Tojo, and Kouichi Katsurada.
+Expectation-based parsing for jazz chord sequences. In Proceedings of the 17th Sound
+and Music Computing Conference, pp. 350-356, 2020.
+
+
+
+## 自分用のメモ
 ### git
 .gitignore を後から追加
 - ファイル削除
