@@ -43,6 +43,8 @@ yarn run build
 - キャッシュ削除
   ``` git rm --cached hogehoge.txt ```
 
+Gitではそもそも空っぽのディレクトリ単体は追跡できないため，```py/linegraph ``` には空ファイルの```.keep```を含めている．
+
 ---
 
 This project was generated with [electron-nuxt](https://github.com/michalzaq12/electron-nuxt) v1.6.0 using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://github.com/michalzaq12/electron-nuxt/blob/master/README.md).
