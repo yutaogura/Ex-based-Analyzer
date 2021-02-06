@@ -14,11 +14,16 @@ In order to use this application, follow the following steps:
 
 TODO
 
-## Installation
-TODO
+### for linux
+
+### for mac
+
+### for Windows
+
 
 ## Dependencies
-TODO
+- python3.x
+
 
 #### Build Setup
 
