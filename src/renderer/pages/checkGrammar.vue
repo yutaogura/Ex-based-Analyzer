@@ -1,7 +1,7 @@
 <template>
   <div class="main_content">
     <h1>Check Grammar</h1>
-    <p>和声文法の適用確率を確認</p>
+    <p>display all Harmonic Grammar</p>
     <v-divider></v-divider>
     <p></p>
     <h2>Prolongation rule</h2>

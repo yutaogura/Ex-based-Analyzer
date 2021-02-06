@@ -1,8 +1,13 @@
 # Expectation-based Chord Sequence Analyzer(ECSA)
 コード進行を漸進的に解析，構文木を表示するシステム
-(システム本体)
 
-This is electron-nuxt project
+system screenshot
+<img src="./screenshot.png" >
+
+
+
+
+This system is implemented by electron-nuxt.
 
 ## Usage
 In order to use this application, follow the following steps:
@@ -26,8 +31,10 @@ yarn run dev
 
 # build electron application for production
 yarn run build
-
 ```
+
+## CUI Usage
+
 ## Tips
 ### git
 .gitignore を後から追加

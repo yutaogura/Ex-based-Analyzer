@@ -48,13 +48,13 @@ export default {
         },
         {
           href: "/change",
-          title: "Change Probability",
+          title: "Root Graph",
           disabled: false,
           icon: {
             element: "font-awesome-icon",
             attributes: {
               // icon props:
-              icon: "sliders-h",
+              icon: "chart-line",
             },
           },
         },

@@ -5,10 +5,10 @@
     <v-col>   
     <v-card>
       <!-- <v-card-text>tree {{ num }} {{src}} prob:NaN </v-card-text> -->
-      <v-card-text>{{ return_file_name(src) }} </v-card-text>
+      <v-card-text>({{ rank }}) {{ prob }}</v-card-text>
       <!-- <SVGElement name='/assets/temp.svg' /> -->
       <img
-        :src="imageSrc(src)"
+        :src="svg_path"
         class="justify-center"
       >
     </v-card>
@@ -22,30 +22,19 @@
 import SVGElement from "@/components/SVGElement.vue";
 export default {
   name: "ImageCard",
-  props: ["num","src"],
+  props: ["rank","src","prob",'id'],
   components: { SVGElement },
   data() {
     return {
       default_src: require("~/assets/temp.svg"), //imgタグで読み込む
+      svg_path: ""
     };
   },
-  methods:{
-    return_file_name: function(src){
-      // console.log("--->")
-      var temp = src.replace(/^.*[\\\/rank]ob_/, '');
-      var temp2 = temp.replace(".svg",'');
-      console.log(src);
-      return temp2;
-    },
-    imageSrc: function(src){
-      if(src){
-        src = "file://" + src;
-        return src;
-      }else{
-        return this.default_src;
-      }
-    }
-  }
+  created:function(){
+    // 画像のpathが同じ名前になるのでクエリパラメータでタイムスタンプつける必要あり
+    this.svg_path="file://" + this.src + "?" + new Date().getTime();
+    // console.log(this.svg_path);
+  },
 };
 </script>
 

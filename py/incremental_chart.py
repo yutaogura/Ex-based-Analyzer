@@ -26,6 +26,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import collections
 import datetime
+import csv
 
 
 #ログファイル
@@ -35,7 +36,8 @@ FILE_NAME = "./py/chart2.log"
 #LOG_FORMAT = 0  #readable format
 #LOG_FORMAT = 1 #tex format
 LOG_FORMAT = 2  #cairosvg format
-PKL_DATA_PATH = "./py/temp/"
+TEMP_DIR_PATH = "./py/temp/"
+
 
 #Analysis target 
 ANALYSIS_TARGET_FILE = "./py/target.txt"
@@ -55,7 +57,8 @@ SURVIVE_TREE_NUM = 100
 
 Sentense_tmp = 0
 root_count_by_step = []
-
+step_u_list = []
+pre_max_prob = 1
 
 """
 Rule class 
@@ -294,6 +297,7 @@ class Chart:
 
     def get_chart(self):
         return self.chart
+    
 
 
 """
@@ -471,16 +475,32 @@ class ParseError(Exception):
     pass
 
 
-def save_gchart(g_chart,parsed_chord=""):
+def save_gchart(g_chart,parsed_chord="",step_num=0):
+    global step_u_list, pre_max_prob
     trees = []
     for state in g_chart.get_chart():
         tree = state.return_state_list()
         trees.append({"id":state.id,"prob":state.prob,"tree":tree})
-    
     sorted_trees = sorted(trees, key=lambda x:x['prob'], reverse=True)
-    # print(sorted_trees[:10])
-    #pklで保存    
-    pd.to_pickle(sorted_trees,PKL_DATA_PATH+parsed_chord+".pkl")
+    # print(sorted_trees[:5])
+
+    #Uの計算
+    if(step_num==0):
+        step_u_list.append(sorted_trees[0]['prob'])
+    else:
+        # print("U =",sorted_trees[0]['prob'],"/",pre_max_prob)
+        result = sorted_trees[0]['prob'] / pre_max_prob
+        step_u_list.append(result)
+    pre_max_prob = sorted_trees[0]['prob']
+
+    # prob.csvを保存
+    with open(TEMP_DIR_PATH+'{0:02d}'.format(step_num)+'prob.csv','w') as f:
+        writer = csv.writer(f)
+        for rank,tree in enumerate(sorted_trees):
+            writer.writerow(['{0:03d}'.format(rank),tree['prob']])
+    
+    #pklで保存
+    pd.to_pickle(sorted_trees,TEMP_DIR_PATH+'{0:02d}'.format(step_num)+".pkl")
 
 
 def set_root(g_chart):
@@ -535,7 +555,7 @@ def plot_linegraph():
 
     now = datetime.datetime.now()
     fig.savefig("./py/linegraph/root.pdf")
-    # fig.savefig("./py/linegraph/"+ now.strftime('%Y%m%d_%H%M%S') +".png")
+    fig.savefig("./py/linegraph/root.png")
 
 def main():
     g_chart = Chart()
@@ -548,7 +568,7 @@ def main():
 
 
     #なんか入ってたら削除
-    for f in glob.glob(PKL_DATA_PATH+'/*.pkl'):
+    for f in glob.glob(TEMP_DIR_PATH+'/*.pkl'):
         os.remove(f)
 
     with open(ANALYSIS_TARGET_FILE,"r") as f:
@@ -574,17 +594,34 @@ def main():
     # for g in Grammar:
     #      print(g.print_rule())
 
-    #解析本体
 
+    #temp(作業)ディレクトリの中を空っぽに(作り直す)
+    files = os.listdir(TEMP_DIR_PATH)
+    if files: #なんか入ってたら
+        shutil.rmtree(TEMP_DIR_PATH) #消して
+        os.mkdir(TEMP_DIR_PATH) #作る
+
+
+    #解析本体
     try:
         for idx,w in enumerate(words):
             if g_chart is None:
                 raise ParseError("Error! : Global Chart is empty")
             g_chart = Chrat_Parsing(g_chart,w)
-            save_gchart(g_chart,"".join(words[:idx+1]))    
+            save_gchart(g_chart,"".join(words[:idx+1]),idx)    
 
     except ParseError as e:
         print(e)
+
+    global step_u_list
+    # ステップ対応表作成
+    step_list = []
+    for idx, chord_symbol in enumerate(words):
+        map_info = ['{0:02d}'.format(idx),chord_symbol,step_u_list[idx]]
+        step_list.append(map_info)
+    with open(TEMP_DIR_PATH+"map_step.csv",'w') as f:
+        writer = csv.writer(f)
+        writer.writerows(step_list)
 
     plot_linegraph() 
 

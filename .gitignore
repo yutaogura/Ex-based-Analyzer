@@ -10,3 +10,4 @@ py/chart2.log
 py/target.txt
 py/hist/*
 py/__pycache__/*
+py/linegraph/*
