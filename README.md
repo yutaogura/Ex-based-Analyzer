@@ -38,7 +38,10 @@ This project uses a python script in the background. So, If you have not install
    ```
    yarn install
    ```
-3. 
+3. run project
+   ```
+   yarn run dev
+   ``` 
 ### for Windows
 
 1. open power shell, then 
