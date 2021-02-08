@@ -18,7 +18,11 @@ PKL_DATA_PATH = "./py/temp/*.pkl"
 SVG_DATA_PATH = "./py/svg/"
 def main():
 
-    #svgディレクトリの中を空っぽに(作り直す)
+    #svgディレクトリがなければ作る
+    if not os.path.exists(SVG_DATA_PATH):
+        os.mkdir(SVG_DATA_PATH)
+
+    #svgディレクトリの中身を調べる
     files = os.listdir(SVG_DATA_PATH)
     if files: #なんか入ってたら
         shutil.rmtree(SVG_DATA_PATH) #消して
