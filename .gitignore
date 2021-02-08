@@ -4,7 +4,7 @@ build/*
 !build/icons
 node_modules
 temp/*
-py/svg/*
+py/svg/*.svg
 py/temp/*.csv
 py/temp/*.pkl
 py/chart2.log

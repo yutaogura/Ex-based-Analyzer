@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<svg baseProfile="full" height="264px" preserveAspectRatio="xMidYMid meet" style="font-family: times, serif; font-weight:normal; font-style: normal; font-size: 16px;" version="1.1" viewBox="0,0,208.0,264.0" width="208px" xmlns="http://www.w3.org/2000/svg" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs/>
+  <svg width="100%" x="0" y="0em">
+    <defs/>
+    <text text-anchor="middle" x="50%" y="1em">BbM</text>
+  </svg>
+  <svg width="80.7692%" x="0%" y="3em">
+    <defs/>
+    <svg width="100%" x="0" y="0em">
+      <defs/>
+      <text text-anchor="middle" x="50%" y="1em">F7</text>
+    </svg>
+    <svg width="23.8095%" x="0%" y="3em">
+      <defs/>
+      <svg width="100%" x="0" y="0em">
+        <defs/>
+        <text text-anchor="middle" x="50%" y="1em">Dm7</text>
+      </svg>
+      <svg width="100%" x="0%" y="9em">
+        <defs/>
+        <svg width="100%" x="0" y="0em">
+          <defs/>
+          <text text-anchor="middle" x="50%" y="1em">Dm7</text>
+        </svg>
+      </svg>
+      <line stroke="black" x1="50%" x2="50%" y1="1.2em" y2="9em"/>
+    </svg>
+    <line stroke="black" x1="50%" x2="11.9048%" y1="1.2em" y2="3em"/>
+    <svg width="76.1905%" x="23.8095%" y="3em">
+      <defs/>
+      <svg width="100%" x="0" y="0em">
+        <defs/>
+        <text text-anchor="middle" x="50%" y="1em">F7</text>
+      </svg>
+      <svg width="75%" x="0%" y="3em">
+        <defs/>
+        <svg width="100%" x="0" y="0em">
+          <defs/>
+          <text text-anchor="middle" x="50%" y="1em">Chdim7</text>
+        </svg>
+        <svg width="33.3333%" x="0%" y="3em">
+          <defs/>
+          <svg width="100%" x="0" y="0em">
+            <defs/>
+            <text text-anchor="middle" x="50%" y="1em">G7</text>
+          </svg>
+          <svg width="100%" x="0%" y="3em">
+            <defs/>
+            <svg width="100%" x="0" y="0em">
+              <defs/>
+              <text text-anchor="middle" x="50%" y="1em">G7</text>
+            </svg>
+          </svg>
+          <line stroke="black" x1="50%" x2="50%" y1="1.2em" y2="3em"/>
+        </svg>
+        <line stroke="black" x1="50%" x2="16.6667%" y1="1.2em" y2="3em"/>
+        <svg width="66.6667%" x="33.3333%" y="3em">
+          <defs/>
+          <svg width="100%" x="0" y="0em">
+            <defs/>
+            <text text-anchor="middle" x="50%" y="1em">Chdim7</text>
+          </svg>
+          <svg width="100%" x="0%" y="3em">
+            <defs/>
+            <svg width="100%" x="0" y="0em">
+              <defs/>
+              <text text-anchor="middle" x="50%" y="1em">?</text>
+            </svg>
+          </svg>
+          <line stroke="black" x1="50%" x2="50%" y1="1.2em" y2="3em"/>
+        </svg>
+        <line stroke="black" x1="50%" x2="66.6667%" y1="1.2em" y2="3em"/>
+      </svg>
+      <line stroke="black" x1="50%" x2="37.5%" y1="1.2em" y2="3em"/>
+      <svg width="25%" x="75%" y="3em">
+        <defs/>
+        <svg width="100%" x="0" y="0em">
+          <defs/>
+          <text text-anchor="middle" x="50%" y="1em">F7</text>
+        </svg>
+        <svg width="100%" x="0%" y="6em">
+          <defs/>
+          <svg width="100%" x="0" y="0em">
+            <defs/>
+            <text text-anchor="middle" x="50%" y="1em">?</text>
+          </svg>
+        </svg>
+        <line stroke="black" x1="50%" x2="50%" y1="1.2em" y2="6em"/>
+      </svg>
+      <line stroke="black" x1="50%" x2="87.5%" y1="1.2em" y2="3em"/>
+    </svg>
+    <line stroke="black" x1="50%" x2="61.9048%" y1="1.2em" y2="3em"/>
+  </svg>
+  <line stroke="black" x1="50%" x2="40.3846%" y1="1.2em" y2="3em"/>
+  <svg width="19.2308%" x="80.7692%" y="3em">
+    <defs/>
+    <svg width="100%" x="0" y="0em">
+      <defs/>
+      <text text-anchor="middle" x="50%" y="1em">BbM</text>
+    </svg>
+    <svg width="100%" x="0%" y="12em">
+      <defs/>
+      <svg width="100%" x="0" y="0em">
+        <defs/>
+        <text text-anchor="middle" x="50%" y="1em">?</text>
+      </svg>
+    </svg>
+    <line stroke="black" x1="50%" x2="50%" y1="1.2em" y2="12em"/>
+  </svg>
+  <line stroke="black" x1="50%" x2="90.3846%" y1="1.2em" y2="3em"/>
+</svg>
