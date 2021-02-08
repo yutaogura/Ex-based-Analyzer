@@ -15,8 +15,18 @@ This system is implemented by electron-nuxt.
 ## Usage
 In order to use this application, follow the following steps:
 
-TODO
+First, you must install node.js 
+https://nodejs.org/ja/download/
 
+Second, Type this.
+```
+npm install yarn
+```
+
+This project uses a python script in the background. So, If you have not installed Python3.x, you must download it.
+```
+
+```
 ### for linux
 
 ### for mac
@@ -31,7 +41,10 @@ TODO
 3. 
 ### for Windows
 
-
+1. open power shell, then 
+```
+npm install --global --production windows-build-tools
+```
 ## Dependencies
 - python3.x
 
