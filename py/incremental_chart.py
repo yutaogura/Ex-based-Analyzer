@@ -462,7 +462,7 @@ def Chrat_Parsing(global_chart,w):
     print("global_len",len(global_chart.get_chart()))
     global_chart.print_max_prob()
     global_chart.print_min_prob()
-    global_chart.save_probhist()
+    # global_chart.save_probhist()
     global_chart.count_root()
     # print("local_len",len(local_chart.get_chart()))
     # global_chart.print_chart()
