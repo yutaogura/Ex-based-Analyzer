@@ -5,7 +5,8 @@ build/*
 node_modules
 temp/*
 py/svg/*
-py/temp/*
+py/temp/*.csv
+py/temp/*.pkl
 py/chart2.log
 py/target.txt
 py/hist/*

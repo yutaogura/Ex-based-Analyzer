@@ -20,7 +20,15 @@ TODO
 ### for linux
 
 ### for mac
-
+1. clone repository
+   ```
+   git clone https://github.com/yutaogura/Ex-based-Analyzer.git
+   ```
+2. yarn install
+   ```
+   yarn install
+   ```
+3. 
 ### for Windows
 
 
