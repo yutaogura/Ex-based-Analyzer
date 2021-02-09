@@ -44,7 +44,7 @@ This project uses a python script in the background. So, If you have not install
    ``` 
 ### for Windows
 
-1. open power shell, then 
+1. open power shell (run as administrator), then 
 ```
 npm install --global --production windows-build-tools
 ```
