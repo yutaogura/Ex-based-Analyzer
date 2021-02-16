@@ -1,5 +1,5 @@
 # Expectation-based Chord Sequence Analyzer(ECSA)
-コード進行を漸進的に解して，楽曲途中の和声構造を表示するシステム
+コード進行を漸進的に解析して，楽曲途中の和声構造を表示するシステム
 
 
 Visualize a harmonic structure in the middle of the song with incremental parsing
@@ -50,6 +50,10 @@ npm install --global --production windows-build-tools
 ```
 ## Dependencies
 - python3.x
+
+- Jazz Harmony Treebank 
+  - The probabilities for incremental analysis are caluculated from Jazz Harmony Treebank by D. Harasim et al.
+  - https://github.com/DCMLab/JazzHarmonyTreebank
 
 ## CUI Usage
 
